@@ -1,3 +1,5 @@
+#!/bin/bash
+
 oh=/opt/app/oracle/product/19.3/dbhome_1
 nh="$oh/network/admin"
 ls_file="$nh/listener.ora"
