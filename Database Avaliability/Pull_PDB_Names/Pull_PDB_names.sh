@@ -1,3 +1,5 @@
+###Pull PDB Names if Any
+
 #!/bin/sh
 
 ###oracle home arrays function
@@ -5,7 +7,8 @@
 ###Global Variables
 declare -A db_arr
 declare -A oh_arr
-script_dir=
+script_dir=/home/oracle/paul
+
 
 ##Create Arrays Function
 
@@ -31,16 +34,17 @@ done
 }
 
 
-query_db_state()
+pull_pdb_names()
 {
 
-script=$script_dir/test.sql
+script=$script_dir/Pull_PDB_Names.sql
+spool_file="PDB_Names.txt"
 
 export ORACLE_SID=$1
 export ORACLE_HOME=$2
 export PATH=$ORACLE_HOME/bin:$PATH
 
-sqlplus / as sysdba @$3 $script > /dev/null 2&>1
+sqlplus / as sysdba $script $spool_file > /dev/null 2&>1
 
 }
 
@@ -50,5 +54,7 @@ create_db_name_home_array
 n=${#db_arr[@]}
 #call db query for all CDBS
 for ((i = 0; i < n; ++i)); do
-	query_db_state ${db_arr[$i]} ${oh_arr[$i]} $script
+	pull_pdb_names ${db_arr[$i]} ${oh_arr[$i]} $script_dir
 done
+
+
