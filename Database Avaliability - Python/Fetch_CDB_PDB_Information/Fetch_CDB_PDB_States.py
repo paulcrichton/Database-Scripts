@@ -48,8 +48,7 @@ def gather_information_from_database(user, pwd, host, port, database_name):
 
     pdb_states = fetch_pdb_states(connection)
 
-    print(cdb_states)
-    print(pdb_states)
+    return cdb_states, pdb_states
 
 ###MAIN CODE FROM HERE
 def main():
