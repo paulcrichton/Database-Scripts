@@ -24,7 +24,12 @@ def get_states():
     
     for db_name in db_arr:
         user, pwd, host, port, database_name=create_login_details(db_name)
-        cdb_states, pdb_states = GIFD(user, pwd, host, port, database_name)
+
+        try: 
+            cdb_states, pdb_states = GIFD(user, pwd, host, port, database_name)
+        except:
+            print("database ", db_name, "could not be queried")
+            next
     
     return cdb_states, pdb_states
 
