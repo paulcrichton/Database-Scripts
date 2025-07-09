@@ -10,12 +10,13 @@ def main():
     port = 1521
     database_name = "IFSLCDB"
 
-    
+
 
 
     
     cdb_states, pdb_states = GIFD(user, pwd, host, port, database_name)
 
+    print(cdb_states, pdb_states)
     
 
 if __name__ == "__main__":
