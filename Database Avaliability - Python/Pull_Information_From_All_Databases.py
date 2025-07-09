@@ -8,7 +8,11 @@ def main():
     pwd = "paul"
     host = "prodba-db"
     port = 1521
-    database_name = "IFSPCDB"
+    database_name = "IFSLCDB"
+
+    
+
+
     
     cdb_states, pdb_states = GIFD(user, pwd, host, port, database_name)
 
