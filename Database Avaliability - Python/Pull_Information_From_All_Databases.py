@@ -28,7 +28,10 @@ def get_states():
         try: 
             cdb_states, pdb_states = GIFD(user, pwd, host, port, database_name)
         except:
-            print("database ", db_name, "could not be queried")
+            print("-----------------------------------------\n")
+            print("database", db_name, "could not be queried")
+            print("-----------------------------------------\n")
+        
             next
     
     return cdb_states, pdb_states
