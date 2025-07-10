@@ -39,15 +39,10 @@ def get_FRA(db_arr, oh_arr):
     for db_name in db_arr:
         user, pwd, host, port, database_name=create_login_details(db_name)
 
-        try: 
-            fra_information = GFI(user, pwd, host, port, database_name)
-        except:
-            print("-----------------------------------------\n")
-            print("database", db_name, "could not be queried\n")
-            print("-----------------------------------------\n")
-        
-            next
-            
+        fra_information = GFI(user, pwd, host, port, database_name)
+
+        next
+
     return fra_information
 
 def get_db_information_all():
