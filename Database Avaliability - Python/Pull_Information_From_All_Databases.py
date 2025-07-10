@@ -30,6 +30,10 @@ def get_states(db_name):
             print("database", db_name, "could not be queried\n")
             print("-----------------------------------------\n")
 
+            cdb_states = ['UNKNOWN']
+            pdb_states = ['UNKNOWN']
+
+            return cdb_states, pdb_states
 
 
 
@@ -44,20 +48,24 @@ def get_FRA(db_name):
             print("Unable to query FRA information for", db_name, "\n")
             print("-----------------------------------------\n")
 
+            fra_information = ['UNKNOWN']
+
+            return fra_information
+
 def create_report_all():
     db_arr, oh_arr = CDNHA()
 
-    for db_name in db_arr:
-        if db_name == None:
-             print("none type detected")
+    print(db_arr)
 
+    for db_name in db_arr:
+        print(db_name)
         cdb_states, pdb_states = get_states(db_name)
 
         print(cdb_states, pdb_states)
 
-        fra_information=get_FRA(db_name)
+        #fra_information=get_FRA(db_name)
 
-        print(fra_information)
+        #print(fra_information)
 
 if __name__ == "__main__":
     main()
