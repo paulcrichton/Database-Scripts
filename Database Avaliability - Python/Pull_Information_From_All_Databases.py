@@ -59,15 +59,18 @@ def create_report_all():
     db_arr, oh_arr = CDNHA()
 
     for db_name in db_arr:
+
         cdb_states, pdb_states = get_states(db_name)
 
         print(f'Report for {db_name} started on {sysdate}')
 
-        print(cdb_states, pdb_states)
-
         #fra_information=get_FRA(db_name)
 
         #print(fra_information)
+
+        with open("{db_name}_{sysdate}.txt", "a") as f:
+            f.write(f'Report for {db_name} started on {sysdate}')
+
 
 if __name__ == "__main__":
     main()
