@@ -47,14 +47,18 @@ def get_FRA(db_arr, oh_arr):
             print("-----------------------------------------\n")
         
             next
-
+    return fra_information
 
 def get_db_information_all():
     db_arr, oh_arr = CDNHA()
 
     cdb_states, pdb_states = get_states(db_arr, oh_arr)
 
+    fra_information=get_FRA(db_arr, oh_arr)
+
     print(cdb_states, pdb_states)
+
+    print(fra_information)
 
 if __name__ == "__main__":
     main()
