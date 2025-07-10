@@ -4,6 +4,7 @@ from Fetch_CDB_PDB_Information.Fetch_CDB_PDB_States import gather_information_fr
 from Fetch_CDB_PDB_Information.Fetch_Database_Home_And_SID import create_db_name_home_array as CDNHA
 from Fetch_CDB_PDB_Information.Fetch_FRA_Information import get_fra_information as GFI
 import numpy as py
+from datetime import datetime
 
 def main():
     create_report_all()
@@ -27,7 +28,7 @@ def get_states(db_name):
             return cdb_states, pdb_states
         except:
             print("-----------------------------------------\n")
-            print("database", db_name, "could not be queried\n")
+            print(f'database {db_name} could not be queried\n')
             print("-----------------------------------------\n")
 
             cdb_states = ['UNKNOWN']
@@ -45,7 +46,7 @@ def get_FRA(db_name):
             return fra_information
         except:
             print("-----------------------------------------\n")
-            print("Unable to query FRA information for", db_name, "\n")
+            print(f'Unable to query FRA information for {db_name}\n')
             print("-----------------------------------------\n")
 
             fra_information = ['UNKNOWN']
@@ -53,13 +54,14 @@ def get_FRA(db_name):
             return fra_information
 
 def create_report_all():
+    sysdate = datetime.today().strftime('%Y-%m-%d %H:%M:%S')
+
     db_arr, oh_arr = CDNHA()
 
-    print(db_arr)
-
     for db_name in db_arr:
-        print(db_name)
         cdb_states, pdb_states = get_states(db_name)
+
+        print(f'Report for {db_name} started on {sysdate}')
 
         print(cdb_states, pdb_states)
 
