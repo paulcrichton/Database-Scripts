@@ -6,11 +6,9 @@ from Fetch_CDB_PDB_Information.Fetch_FRA_Information import get_fra_information 
 import numpy as py
 
 def main():
-    
-    cdb_states, pdb_states = get_states()
+    get_db_information_all()
 
-    print(cdb_states, pdb_states)
-    
+
 def create_login_details(name):
     user= "c##paul"
     pwd = "paul"
