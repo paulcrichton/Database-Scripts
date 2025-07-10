@@ -54,7 +54,7 @@ def get_FRA(db_name):
             return fra_information
 
 def create_report_all():
-    sysdate = datetime.today().strftime('%Y-%m-%d %H:%M:%S')
+    sysdate = datetime.today().isoformat()
 
     db_arr, oh_arr = CDNHA()
 
