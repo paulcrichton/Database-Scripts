@@ -29,7 +29,7 @@ def get_fra_information(user, pwd, host, port, database_name):
 
     fra_information=np.append(get_FRA_location(connection))
 
-    print(fra_information)
+    return fra_information
 
 
 def main():

@@ -47,6 +47,7 @@ def get_FRA(db_arr, oh_arr):
             print("-----------------------------------------\n")
         
             next
+            
     return fra_information
 
 def get_db_information_all():
