@@ -48,6 +48,8 @@ def create_report_all():
     db_arr, oh_arr = CDNHA()
 
     for db_name in db_arr:
+        if db_name == None:
+             print("none type detected")
 
         cdb_states, pdb_states = get_states(db_name)
 
