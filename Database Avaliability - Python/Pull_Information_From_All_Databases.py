@@ -68,7 +68,7 @@ def create_report_all():
 
         #print(fra_information)
 
-        with open("{db_name}_{sysdate}.txt", "a") as f:
+        with open(f'{db_name}_{sysdate}.txt', "a") as f:
             f.write(f'Report for {db_name} started on {sysdate}')
 
 
