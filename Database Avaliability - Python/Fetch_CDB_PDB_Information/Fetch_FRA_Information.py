@@ -1,5 +1,6 @@
 #!/usr/bin/env python3.9
 
+import oracledb
 from Fetch_CDB_PDB_Information.Fetch_CDB_PDB_States import gather_information_from_database as GIFD
 from Fetch_CDB_PDB_Information.Fetch_Database_Home_And_SID import create_db_name_home_array as CDNHA
 import Database_Connections.Create_Connection as DCCC 
@@ -22,7 +23,7 @@ def get_FRA_location(database_connection):
     return fra_location
 
 def get_fra_information(user, pwd, host, port, database_name):
-    connection = DCCC(user, pwd, host, port, database_name)
+    connection = DCCC.create_connection(user, pwd, host, port, database_name)
     
     #Location, Size, Percent_Used_Space
     fra_information=[]
