@@ -6,9 +6,6 @@ from Fetch_CDB_PDB_Information.Fetch_Database_Home_And_SID import create_db_name
 import Database_Connections.Create_Connection as DCCC 
 import numpy as np
 
-
-
-
 def get_FRA_location(database_connection):
     
     fra_location=[]

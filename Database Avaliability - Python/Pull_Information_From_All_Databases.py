@@ -6,7 +6,7 @@ from Fetch_CDB_PDB_Information.Fetch_FRA_Information import get_fra_information 
 import numpy as py
 
 def main():
-    get_db_information_all()
+    create_report_all()
 
 
 def create_login_details(name):
@@ -18,43 +18,44 @@ def create_login_details(name):
 
     return user, pwd, host, port, database_name
 
-def get_states(db_arr, oh_arr):
+def get_states(db_name):
     
-    for db_name in db_arr:
         user, pwd, host, port, database_name=create_login_details(db_name)
 
         try: 
             cdb_states, pdb_states = GIFD(user, pwd, host, port, database_name)
+            return cdb_states, pdb_states
         except:
             print("-----------------------------------------\n")
             print("database", db_name, "could not be queried\n")
             print("-----------------------------------------\n")
-        
-            next
-    
-    return cdb_states, pdb_states
 
 
-def get_FRA(db_arr, oh_arr):
-    for db_name in db_arr:
+
+
+def get_FRA(db_name):
         user, pwd, host, port, database_name=create_login_details(db_name)
 
-        fra_information = GFI(user, pwd, host, port, database_name)
+        try: 
+            fra_information = GFI(user, pwd, host, port, database_name)
+            return fra_information
+        except:
+            print("-----------------------------------------\n")
+            print("Unable to query FRA information for", db_name, "\n")
+            print("-----------------------------------------\n")
 
-        next
-
-    return fra_information
-
-def get_db_information_all():
+def create_report_all():
     db_arr, oh_arr = CDNHA()
 
-    cdb_states, pdb_states = get_states(db_arr, oh_arr)
+    for db_name in db_arr:
 
-    fra_information=get_FRA(db_arr, oh_arr)
+        cdb_states, pdb_states = get_states(db_name)
 
-    print(cdb_states, pdb_states)
+        print(cdb_states, pdb_states)
 
-    print(fra_information)
+        fra_information=get_FRA(db_name)
+
+        print(fra_information)
 
 if __name__ == "__main__":
     main()
