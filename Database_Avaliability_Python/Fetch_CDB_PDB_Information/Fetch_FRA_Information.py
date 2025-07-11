@@ -3,7 +3,7 @@
 import oracledb
 import sys
 
-sys.path.append('../Database Avaliability - Python')
+sys.path.append('../Database_Avaliability_Python')
 import Database_Connections.Create_Connection as DCCC 
 import numpy as np
 
