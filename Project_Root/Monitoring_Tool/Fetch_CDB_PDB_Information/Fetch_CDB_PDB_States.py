@@ -2,7 +2,7 @@
 
 import oracledb
 import numpy as np
-from Monitoring_Tool.Database_Connections import Create_Connection as DCCC
+from Project_Root.Database_Connections import Create_Connection as DCCC
 
 def fetch_pdb_states(database_connection):
     pluggable_database_states=[]
