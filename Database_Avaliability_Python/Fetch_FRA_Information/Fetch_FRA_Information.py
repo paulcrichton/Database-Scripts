@@ -13,17 +13,30 @@ def get_FRA_location(database_connection):
             for row in cursor.execute("select value from v$parameter where name = 'db_recovery_file_dest'"):                
                 fra_location = list(row)
 
-    fra_location=np.asarray(fra_location)
-
     return fra_location
+
+def get_FRA_Size(database_connection):
+    
+    fra_size=[]
+
+    with database_connection:
+        with database_connection.cursor() as cursor:
+            for row in cursor.execute("select value from v$parameter where name = 'db_recovery_file_dest_size'"):                
+                fra_size = list(row)
+
+    return fra_size
+
 
 def get_fra_information(user, pwd, host, port, database_name):
     connection = DCCC.create_connection(user, pwd, host, port, database_name)
+
+    print(connection)
     
     #Location, Size, Percent_Used_Space
     fra_information=[]
 
-    fra_information=np.append(get_FRA_location(connection))
+    fra_information=get_FRA_location(connection)
+    fra_information.append(get_FRA_Size(connection))
 
     return fra_information
 
