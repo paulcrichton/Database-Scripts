@@ -1,8 +1,6 @@
 #!/usr/bin/env python3.9
 
 import oracledb
-import sys
-import Database_Avaliability_Python.Database_Connections.Create_Connection as DCCC 
 import numpy as np
 
 def get_FRA_location(database_connection):
