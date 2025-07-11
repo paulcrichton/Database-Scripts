@@ -2,7 +2,7 @@
 
 import oracledb
 import numpy as np
-from Database_Connections import Create_Connection as DCCC
+from ..Database_Connections import Create_Connection as DCCC
 
 def get_FRA_location(database_connection):
     
