@@ -1,8 +1,6 @@
 #!/usr/bin/env python3.9
 
 import oracledb
-from Fetch_CDB_PDB_Information.Fetch_CDB_PDB_States import gather_information_from_database as GIFD
-from Fetch_CDB_PDB_Information.Fetch_Database_Home_And_SID import create_db_name_home_array as CDNHA
 import Database_Connections.Create_Connection as DCCC 
 import numpy as np
 
