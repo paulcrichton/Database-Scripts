@@ -31,8 +31,8 @@ def get_states(db_name):
             print(f'database {db_name} could not be queried\n')
             print("-----------------------------------------\n")
 
-            cdb_states = ['UNKNOWN']
-            pdb_states = ['UNKNOWN']
+            cdb_states = [['UNKNOWN','UNKNOWN']]
+            pdb_states = [['UNKNOWN','UNKNOWN']]
 
             return cdb_states, pdb_states
 
@@ -63,15 +63,15 @@ def create_report_all():
         cdb_states, pdb_states = get_states(db_name)
 
         print(f'Report for {db_name} started on {sysdate}')
-        print(f'Container database {db_name} is {cdb_states[0:1]}')
+        print(f'Container database {db_name} is {cdb_states[0][1]}')
         
-        num_pdbs = len(pdb_states)/2
+        #num_pdbs = len(pdb_states)/2
 
-        np.asarray(pdb_states)
-        pdb_states.reshape((num_pdbs, 2))
+        #np.array(pdb_states)
+        #pdb_states.reshape((num_pdbs, 2))
         
         for pdb, state in pdb_states:
-             print(f'Pluggable Database {pdb} is {state}')
+            print(f'Pluggable Database {pdb} is {state}')
 
         #fra_information=get_FRA(db_name)
 
