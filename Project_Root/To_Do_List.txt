@@ -1,0 +1,8 @@
+---Pull_Information_From_All_Databases.py
+    >Write CDB_PDB states to reports
+    >Add formatting for fra_information
+    >Write fra_information to reports
+
+---Fetch_FRA_Information
+    >Process fra_size to GB
+    >Fetch FRA percentages used
