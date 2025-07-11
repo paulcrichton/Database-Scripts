@@ -49,7 +49,7 @@ def get_FRA(db_name):
             print(f'Unable to query FRA information for {db_name}\n')
             print("-----------------------------------------\n")
 
-            fra_information = ['UNKNOWN']
+            fra_information = [['UNKNOWN','UNKNOWN']]
 
             return fra_information
 
@@ -64,11 +64,6 @@ def create_report_all():
 
         print(f'Report for {db_name} started on {sysdate}')
         print(f'Container database {db_name} is {cdb_states[0][1]}')
-        
-        #num_pdbs = len(pdb_states)/2
-
-        #np.array(pdb_states)
-        #pdb_states.reshape((num_pdbs, 2))
         
         for pdb, state in pdb_states:
             print(f'Pluggable Database {pdb} is {state}')

@@ -12,7 +12,7 @@ def get_FRA_location(database_connection):
 
     with database_connection:
         with database_connection.cursor() as cursor:
-            for row in cursor.execute("select vaule from v$parameter where name 'db_recovery_file_dest'"):                
+            for row in cursor.execute("select value from v$parameter where name = 'db_recovery_file_dest'"):                
                 fra_location = list(row)
 
     fra_location=np.asarray(fra_location)
@@ -35,8 +35,11 @@ def main():
     pwd = "paul"
     host = "prodba-db"
     port = 1521
-    database_name = "name"
+    database_name = "ifslcdb"
 
+    fra_information=get_fra_information(user, pwd, host, port, database_name)
+
+    print(fra_information)
 
 
 if __name__ == "__main__":
