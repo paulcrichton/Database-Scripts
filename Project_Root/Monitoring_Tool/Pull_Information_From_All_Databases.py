@@ -68,9 +68,9 @@ def create_report_all():
         for pdb, state in pdb_states:
             print(f'Pluggable Database {pdb} is {state}')
 
-        #fra_information=get_FRA(db_name)
+        fra_information=get_FRA(db_name)
 
-        #print(fra_information)
+        print(fra_information)
 
         with open(f'{db_name}_{sysdate}.txt', "a") as f:
             f.write(f'Report for {db_name} started on {sysdate}')
