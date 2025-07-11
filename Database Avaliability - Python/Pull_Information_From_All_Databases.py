@@ -65,6 +65,9 @@ def create_report_all():
         print(f'Report for {db_name} started on {sysdate}')
         print(f'Container database {db_name} is {cdb_states[0:1]}')
         
+        num_pdbs = len(pdb_states)/2
+
+        pdb_states.reshape((num_pdbs, 2))
         for pdb, state in pdb_states:
              print(f'Pluggable Database {pdb} is {state}')
 
