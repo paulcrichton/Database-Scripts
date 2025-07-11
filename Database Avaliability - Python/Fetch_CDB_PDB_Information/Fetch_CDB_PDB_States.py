@@ -11,7 +11,7 @@ def fetch_pdb_states(database_connection):
         with database_connection.cursor() as cursor:
             for row in cursor.execute("select name, open_mode from v$PDBS"):
                 
-                pluggable_database_states.append(list(row))
+                pluggable_database_states.append(row)
 
     pluggable_database_states=np.asarray(pluggable_database_states)
 
