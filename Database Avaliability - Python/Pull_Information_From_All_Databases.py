@@ -63,7 +63,7 @@ def create_report_all():
         cdb_states, pdb_states = get_states(db_name)
 
         print(f'Report for {db_name} started on {sysdate}')
-        print(f'Container database {db_name} is {cdb_states[0][1]}')
+        print(f'Container database {db_name} is {cdb_states[0:1]}')
         
         for pdb, state in pdb_states:
              print(f'Pluggable Database {pdb} is {state}')
