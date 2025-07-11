@@ -1,8 +1,8 @@
 #!/usr/bin/env python3.9
 
-from Fetch_CDB_PDB_Information.Fetch_CDB_PDB_States import gather_information_from_database as GIFD
-from Fetch_CDB_PDB_Information.Fetch_Database_Home_And_SID import create_db_name_home_array as CDNHA
-from Project_Root.Fetch_FRA_Information.Fetch_FRA_Information import get_fra_information as GFI
+from Monitoring_Tool.Fetch_CDB_PDB_Information.Fetch_CDB_PDB_States import gather_information_from_database as GIFD
+from Monitoring_Tool.Fetch_CDB_PDB_Information.Fetch_Database_Home_And_SID import create_db_name_home_array as CDNHA
+from Monitoring_Tool.Fetch_FRA_Information.Fetch_FRA_Information import get_fra_information as GFI
 import numpy as np
 from datetime import datetime
 
