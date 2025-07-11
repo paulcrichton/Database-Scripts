@@ -7,11 +7,9 @@ import Database_Connections.Create_Connection as DCCC
 def fetch_pdb_states(database_connection):
     pluggable_database_states=[]
 
-    with database_connection:
-        with database_connection.cursor() as cursor:
-            for row in cursor.execute("select name, open_mode from v$PDBS"):
-                
-                pluggable_database_states.append(row)
+    cursor = database_connection.cursor()
+    for row in cursor.execute("select name, open_mode from v$PDBS"):
+        pluggable_database_states.append(row)
 
     pluggable_database_states=np.asarray(pluggable_database_states)
     print(pluggable_database_states[0][1])
@@ -20,10 +18,9 @@ def fetch_pdb_states(database_connection):
 def fetch_cdb_states(database_connection):
     container_database_state=[]
 
-    with database_connection:
-        with database_connection.cursor() as cursor:
-            for row in cursor.execute("select name, open_mode from v$database"):                
-                container_database_state.append(row)
+    cursor = database_connection.cursor()
+    for row in cursor.execute("select name, open_mode from v$database"):                
+        container_database_state.append(row)
 
     container_database_state=np.asarray(container_database_state)
 
@@ -38,6 +35,8 @@ def gather_information_from_database(user, pwd, host, port, database_name):
     connection = DCCC.create_connection(user, pwd, host, port, database_name)
 
     pdb_states = np.asarray(fetch_pdb_states(connection))
+
+    connection.close()
 
     return cdb_states, pdb_states
 
