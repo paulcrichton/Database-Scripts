@@ -1,6 +1,9 @@
 #!/usr/bin/env python3.9
 
 import oracledb
+import sys
+
+sys.path.append('../Database Avaliability - Python')
 import Database_Connections.Create_Connection as DCCC 
 import numpy as np
 
