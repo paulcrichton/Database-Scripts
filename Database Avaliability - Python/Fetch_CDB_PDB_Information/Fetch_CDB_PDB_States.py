@@ -23,7 +23,7 @@ def fetch_cdb_states(database_connection):
     with database_connection:
         with database_connection.cursor() as cursor:
             for row in cursor.execute("select name, open_mode from v$database"):                
-                container_database_state.append(list(row))
+                container_database_state.append(row)
 
     container_database_state=np.asarray(container_database_state)
 
