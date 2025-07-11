@@ -37,7 +37,7 @@ def gather_information_from_database(user, pwd, host, port, database_name):
 
     connection = DCCC.create_connection(user, pwd, host, port, database_name)
 
-    pdb_states = fetch_pdb_states(connection)
+    pdb_states = np.asarray(fetch_pdb_states(connection))
 
     return cdb_states, pdb_states
 
