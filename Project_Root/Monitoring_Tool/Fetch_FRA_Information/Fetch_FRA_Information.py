@@ -24,6 +24,13 @@ def get_FRA_Size(database_connection):
 
     return fra_size
 
+def get_FRA_Percent_Used(database_connection):
+     fra_percent_used=[]
+
+     cursor = database_connection.cursor()
+     for row in cursor.execute("select * from v$recovery_area_usage"):
+         fra_precent_used = list(row)
+
 
 def get_fra_information(user, pwd, host, port, database_name):
     connection = DCCC.create_connection(user, pwd, host, port, database_name)
