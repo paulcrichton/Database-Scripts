@@ -65,7 +65,7 @@ def create_report_all():
 
         cdb_states, pdb_states = get_states(db_name)
 
-        if "UNKNOWN" in cdb_states:
+        if 'UNKNOWN' in cdb_states:
              print(f'Database {db_arr} is unreachable')
              continue 
 
