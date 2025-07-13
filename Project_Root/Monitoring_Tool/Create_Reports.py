@@ -68,7 +68,7 @@ def create_report_all():
 
                
         with open(f'{db_name}_{sysdate}.txt', "a") as f:
-            report_names.append(f.name())
+            report_names.append(f.name)
 
             f.write(f'Report for {db_name} started on {sysdate}')
             sys.stdout = f
@@ -106,7 +106,7 @@ def create_report_all():
 
     print(report_names)
     for file_name in report_names:
-        file = open("file_name")
+        file = open(file_name)
         print(file.read())
 
 
