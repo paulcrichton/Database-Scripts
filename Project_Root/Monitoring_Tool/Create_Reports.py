@@ -4,6 +4,7 @@ from Monitoring_Tool.Fetch_CDB_PDB_Information.Fetch_CDB_PDB_States import gathe
 from Monitoring_Tool.Fetch_CDB_PDB_Information.Fetch_Database_Home_And_SID import create_db_name_home_array as CDNHA
 from Monitoring_Tool.Fetch_FRA_Information.Fetch_FRA_Information import create_FRA_report as CFR
 import numpy as np
+import sys
 from datetime import datetime
 
 def main():
@@ -58,42 +59,47 @@ def get_FRA(db_name):
 
 def create_report_all():
     sysdate = datetime.today().isoformat()
+    o = sys.stdout
 
     db_arr, oh_arr = CDNHA()
 
     for index, db_name in enumerate(db_arr):
 
-        cdb_states, pdb_states = get_states(db_name)
-
-        if 'UNKNOWN' in cdb_states:
-            print(f'Database {db_arr} is unreachable\n')
-            print("-----------------------------------------\n")
-            print(f'End of report for {db_name} at {sysdate}')
-            print("-----------------------------------------\n\n\n\n")
-        
-            continue 
-
-        print(f'Report for {db_name} started at {sysdate}\n\n')
-        print("-----------------------------------------\n")
-        print(f'Database Configuration Information')
-        print("-----------------------------------------\n")
-
-        print(f'Database Home: {oh_arr[index]}')
-
-        print(f'Container database {db_name} is {cdb_states[0][1]}')
-        
-        for pdb, state in pdb_states:
-            print(f'Pluggable Database {pdb} is {state}')
-
-        fra_configuration, fra_usage_breakdown, fra_percent_used=get_FRA(db_name)
-        print("\n\n\n")
-        print("-----------------------------------------\n")
-        print(f'Fast Recovery Configuration\n\n')
-        print("-----------------------------------------\n")
-        print(fra_configuration, "\n\n", fra_usage_breakdown, "\n\n", fra_percent_used)
-
+               
         with open(f'{db_name}_{sysdate}.txt', "a") as f:
             f.write(f'Report for {db_name} started on {sysdate}')
+            sys.stdout = f
+
+            cdb_states, pdb_states = get_states(db_name)
+
+            if 'UNKNOWN' in cdb_states:
+                print(f'Database {db_arr} is unreachable\n')
+                print("-----------------------------------------\n")
+                print(f'End of report for {db_name} at {sysdate}')
+                print("-----------------------------------------\n\n\n\n")
+            
+                continue 
+
+            print(f'Report for {db_name} started at {sysdate}\n\n')
+            print("-----------------------------------------\n")
+            print(f'Database Configuration Information')
+            print("-----------------------------------------\n")
+
+            print(f'Database Home: {oh_arr[index]}')
+
+            print(f'Container database {db_name} is {cdb_states[0][1]}')
+            
+            for pdb, state in pdb_states:
+                print(f'Pluggable Database {pdb} is {state}')
+
+            fra_configuration, fra_usage_breakdown, fra_percent_used=get_FRA(db_name)
+            print("\n\n\n")
+            print("-----------------------------------------\n")
+            print(f'Fast Recovery Configuration\n\n')
+            print("-----------------------------------------\n")
+            print(fra_configuration, "\n\n", fra_usage_breakdown, "\n\n", fra_percent_used)
+
+    sys.stdout = o
 
 
 
