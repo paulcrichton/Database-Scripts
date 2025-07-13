@@ -1,6 +1,7 @@
 #!/usr/bin/env python3.9
 
 import oracledb
+import pyarrow
 import numpy as np
 from Monitoring_Tool.Database_Connections import Create_Connection as DCCC
 
@@ -25,12 +26,17 @@ def get_FRA_Size(database_connection):
     return fra_size
 
 def get_FRA_Percent_Used(database_connection):
-     fra_percent_used=[]
 
-     cursor = database_connection.cursor()
-     for row in cursor.execute("select * from v$recovery_area_usage"):
-         fra_precent_used = list(row)
+    SQL="select * from v$recovery_area_usage"
 
+    # Get an OracleDataFrame.
+    # Adjust arraysize to tune the query fetch performance
+    odf = database_connection.fetch_df_all(statement=SQL, arraysize=1000)
+    df = pyarrow.Table.from_arrays(
+    odf.column_arrays(), names=odf.column_names()).to_pandas()
+
+
+    return df
 
 def get_fra_information(user, pwd, host, port, database_name):
     connection = DCCC.create_connection(user, pwd, host, port, database_name)
@@ -40,6 +46,9 @@ def get_fra_information(user, pwd, host, port, database_name):
 
     fra_information=get_FRA_location(connection)
     fra_information.append(get_FRA_Size(connection))
+    fra_information.append(get_FRA_Percent_Used(connection))
+
+    df=get_FRA_Percent_Used(connection)
 
     connection.close()
 
@@ -56,6 +65,7 @@ def main():
     fra_information=get_fra_information(user, pwd, host, port, database_name)
 
     print(fra_information)
+
 
 
     
