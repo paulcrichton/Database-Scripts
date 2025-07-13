@@ -20,7 +20,7 @@ def get_parameter(database_connection, parameter):
 def get_FRA_configuration(connection):
 
     configuration=[]
-    FRA_configuration_parameters=["db_recovery_file_dest", "db_recover_file_dest_size"]
+    FRA_configuration_parameters=["db_recovery_file_dest", "db_recovery_file_dest_size"]
 
     for parameter in FRA_configuration_parameters:
         configuration.append(get_parameter(connection, parameter))
@@ -65,10 +65,6 @@ def main():
     fra_information=get_fra_information(user, pwd, host, port, database_name)
 
     print(fra_information)
-
-
-
-    
 
 
 if __name__ == "__main__":
