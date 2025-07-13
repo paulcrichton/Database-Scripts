@@ -23,8 +23,8 @@ def get_FRA_Size(database_connection):
     # Get an OracleDataFrame.
     # Adjust arraysize to tune the query fetch performance
     odf = database_connection.fetch_df_all(statement=SQL, arraysize=1000)
-    df = pyarrow.Table.from_arrays(
-    odf.column_arrays(), names='db_recovery_file_dest_size').to_pandas()
+    print(odf.column_arrays())
+    df = pyarrow.Table.from_arrays(odf.column_arrays(), names='db_recovery_file_dest_size').to_pandas()
 
     return df
 
@@ -35,8 +35,7 @@ def get_FRA_Percent_Used(database_connection):
     # Get an OracleDataFrame.
     # Adjust arraysize to tune the query fetch performance
     odf = database_connection.fetch_df_all(statement=SQL, arraysize=1000)
-    df = pyarrow.Table.from_arrays(
-    odf.column_arrays(), names=odf.column_names()).to_pandas()
+    df = pyarrow.Table.from_arrays(odf.column_arrays(), names=odf.column_names()).to_pandas()
 
     return df
 
