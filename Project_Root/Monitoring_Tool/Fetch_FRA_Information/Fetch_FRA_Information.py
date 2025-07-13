@@ -17,13 +17,15 @@ def get_FRA_location(database_connection):
 
 def get_FRA_Size(database_connection):
     
-    fra_size=[]
+    SQL="select value from v$parameter where name = 'db_recovery_file_dest_size'"
 
-    cursor = database_connection.cursor()
-    for row in cursor.execute("select value from v$parameter where name = 'db_recovery_file_dest_size'"):                
-        fra_size = list(row)
+    # Get an OracleDataFrame.
+    # Adjust arraysize to tune the query fetch performance
+    odf = database_connection.fetch_df_all(statement=SQL, arraysize=1000)
+    df = pyarrow.Table.from_arrays(
+    odf.column_arrays(), names='db_recovery_file_dest_size').to_pandas()
 
-    return fra_size
+    return df
 
 def get_FRA_Percent_Used(database_connection):
 
@@ -34,7 +36,6 @@ def get_FRA_Percent_Used(database_connection):
     odf = database_connection.fetch_df_all(statement=SQL, arraysize=1000)
     df = pyarrow.Table.from_arrays(
     odf.column_arrays(), names=odf.column_names()).to_pandas()
-
 
     return df
 
