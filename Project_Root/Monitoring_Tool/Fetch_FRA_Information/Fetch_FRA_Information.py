@@ -13,7 +13,7 @@ def get_parameter(database_connection, parameter):
 
     cursor = database_connection.cursor()
     for row in cursor.execute(SQL, [parameter]):            
-        parameter_value = list(row)
+        parameter_value = row
 
     return parameter_value
 
@@ -26,7 +26,7 @@ def get_FRA_configuration(connection):
         configuration.append(get_parameter(connection, parameter))
     
     configuration=dict(zip(FRA_configuration_parameters, configuration))
-    
+
     configuration=pd.DataFrame(configuration)
 
     return configuration
