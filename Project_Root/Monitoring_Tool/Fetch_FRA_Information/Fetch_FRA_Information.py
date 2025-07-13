@@ -10,7 +10,7 @@ def get_parameter(database_connection, parameter):
     SQL = """select value from v$parameter where name=:parameter"""
 
     parameter_value=[]
-    
+
     cursor = database_connection.cursor()
     for row in cursor.execute(SQL, [parameter]):            
         parameter_value = list(row)
@@ -19,13 +19,15 @@ def get_parameter(database_connection, parameter):
 
 def get_FRA_configuration(connection):
 
-    configuration=[[]]
+    configuration=[]
     FRA_configuration_parameters=["db_recovery_file_dest", "db_recover_file_dest_size"]
 
     for parameter in FRA_configuration_parameters:
         configuration.append(get_parameter(connection, parameter))
     
-    configuration=pd.DataFrame(data=configuration, columns=FRA_configuration_parameters)
+    configuration=dict(zip(FRA_configuration_parameters, configuration))
+    
+    configuration=pd.DataFrame(configuration)
 
     return configuration
 
