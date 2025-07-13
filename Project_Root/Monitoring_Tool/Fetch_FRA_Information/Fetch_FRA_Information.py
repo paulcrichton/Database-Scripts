@@ -17,17 +17,14 @@ def get_FRA_location(database_connection):
     return fra_location
 
 def get_FRA_Size(database_connection):
-    
-    SQL="select value from v$parameter where name = 'db_recovery_file_dest_size'"
+    parameter="db_recovery_file_dest"
+    SQL = """select value from v$parameter where name=:parameter"""
 
     fra_size=[]
 
     cursor = database_connection.cursor()
-    for row in cursor.execute(SQL):            
+    for row in cursor.execute(SQL, [parameter]):            
         fra_size = list(row)
-
-    columns = [col.name.lower() for col in cursor.description]
-    print(columns)
 
     return fra_size
 
