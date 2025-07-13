@@ -7,21 +7,18 @@ import numpy as np
 from Monitoring_Tool.Database_Connections import Create_Connection as DCCC
 
 def get_parameter(database_connection, parameter):
-    parameter="db_recovery_file_dest"
     SQL = """select value from v$parameter where name=:parameter"""
-
-    fra_location=[]
 
     cursor = database_connection.cursor()
     for row in cursor.execute(SQL, [parameter]):            
-        fra_size = list(row)
+        parameter_value = list(row)
 
-    return fra_size
+    return parameter_value
 
 def get_FRA_configuration(connection):
 
     configuration=[]
-    FRA_configuration_parameters=["db_recovery_file_dest", "db_recover_file_dest_size"]
+    FRA_configuration_parameters=[["db_recovery_file_dest"], ["db_recover_file_dest_size"]]
 
     for parameter in FRA_configuration_parameters:
         configuration.append(get_parameter(connection, parameter))
