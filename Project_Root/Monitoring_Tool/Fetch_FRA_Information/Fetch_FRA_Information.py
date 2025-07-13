@@ -9,6 +9,8 @@ from Monitoring_Tool.Database_Connections import Create_Connection as DCCC
 def get_parameter(database_connection, parameter):
     SQL = """select value from v$parameter where name=:parameter"""
 
+    parameter_value=[]
+    
     cursor = database_connection.cursor()
     for row in cursor.execute(SQL, [parameter]):            
         parameter_value = list(row)
