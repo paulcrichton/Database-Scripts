@@ -2,7 +2,7 @@
 
 from Monitoring_Tool.Fetch_CDB_PDB_Information.Fetch_CDB_PDB_States import gather_information_from_database as GIFD
 from Monitoring_Tool.Fetch_CDB_PDB_Information.Fetch_Database_Home_And_SID import create_db_name_home_array as CDNHA
-from Monitoring_Tool.Fetch_FRA_Information.Fetch_FRA_Information import get_fra_information as GFI
+from Monitoring_Tool.Fetch_FRA_Information.Fetch_FRA_Information import create_FRA_report as CFR
 import numpy as np
 from datetime import datetime
 
@@ -42,7 +42,7 @@ def get_FRA(db_name):
         user, pwd, host, port, database_name=create_login_details(db_name)
 
         try: 
-            fra_information = GFI(user, pwd, host, port, database_name)
+            fra_information = CFR(user, pwd, host, port, database_name)
             return fra_information
         except:
             print("-----------------------------------------\n")
