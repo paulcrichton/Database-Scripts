@@ -49,7 +49,7 @@ def get_FRA(db_name):
             print(f'Unable to query FRA information for {db_name}\n')
             print("-----------------------------------------\n")
 
-            fra_configuration, fra_usage_breakdown, fra_percent_used = [['UNKNOWN','UNKNOWN']]
+            fra_configuration = [['UNKNOWN','UNKNOWN']]
             fra_usage_breakdown=[['UNKNOWN']]
             fra_percent_used=[['UNKNOWN']]
         
