@@ -66,11 +66,12 @@ def create_report_all():
         cdb_states, pdb_states = get_states(db_name)
 
         if 'UNKNOWN' in cdb_states:
-             print(f'Database {db_arr} is unreachable\n')
-             print("-----------------------------------------\n")
-             print(f'End of report for {db_name} at {sysdate}')
-
-             continue 
+            print(f'Database {db_arr} is unreachable\n')
+            print("-----------------------------------------\n")
+            print(f'End of report for {db_name} at {sysdate}')
+            print("-----------------------------------------\n\n\n\n")
+        
+            continue 
 
         print(f'Report for {db_name} started at {sysdate}\n\n')
         print("-----------------------------------------\n")

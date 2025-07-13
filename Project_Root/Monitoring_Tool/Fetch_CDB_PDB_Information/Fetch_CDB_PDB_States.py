@@ -12,7 +12,6 @@ def fetch_pdb_states(database_connection):
         pluggable_database_states.append(row)
 
     pluggable_database_states=np.asarray(pluggable_database_states)
-    print(pluggable_database_states[0][1])
     return pluggable_database_states
 
 def fetch_cdb_states(database_connection):
