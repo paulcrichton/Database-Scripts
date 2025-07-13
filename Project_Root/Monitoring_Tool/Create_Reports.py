@@ -50,6 +50,9 @@ def get_FRA(db_name):
             print("-----------------------------------------\n")
 
             fra_configuration, fra_usage_breakdown, fra_percent_used = [['UNKNOWN','UNKNOWN']]
+            fra_usage_breakdown=[['UNKNOWN']]
+            fra_percent_used=[['UNKNOWN']]
+        
 
             return fra_configuration, fra_usage_breakdown, fra_percent_used
 
