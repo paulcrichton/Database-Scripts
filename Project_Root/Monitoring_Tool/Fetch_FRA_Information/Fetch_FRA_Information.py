@@ -6,18 +6,42 @@ import pandas as pd
 import numpy as np
 from Monitoring_Tool.Database_Connections import Create_Connection as DCCC
 
-def get_FRA_location(database_connection):
-    
+def get_parameter(database_connection, parameter):
+    parameter="db_recovery_file_dest"
+    SQL = """select value from v$parameter where name=:parameter"""
+
     fra_location=[]
 
     cursor = database_connection.cursor()
-    for row in cursor.execute("select value from v$parameter where name = 'db_recovery_file_dest'"):                
-        fra_location = list(row)
+    for row in cursor.execute(SQL, [parameter]):            
+        fra_size = list(row)
 
-    return fra_location
+    return fra_size
+
+def get_FRA_configuration(connection):
+
+    configuration=[]
+
+    configuration.append(get_parameter(connection, "db_recovery_file_dest"))
+    configuration.append(get_parameter(connection, "db_recovery_file_dest_size"))
+
+    return configuration
+
+def get_FRA_location(database_connection):
+    
+    parameter="db_recovery_file_dest"
+    SQL = """select value from v$parameter where name=:parameter"""
+
+    fra_location=[]
+
+    cursor = database_connection.cursor()
+    for row in cursor.execute(SQL, [parameter]):            
+        fra_size = list(row)
+
+    return fra_size
 
 def get_FRA_Size(database_connection):
-    parameter="db_recovery_file_dest"
+    parameter="db_recovery_file_dest_size"
     SQL = """select value from v$parameter where name=:parameter"""
 
     fra_size=[]
@@ -44,10 +68,7 @@ def get_fra_information(user, pwd, host, port, database_name):
 
     #Location, Size, Percent_Used_Space
     fra_information=[]
-    parameters_df=get_FRA_Size(connection)
-    fra_information=get_FRA_location(connection)
-    fra_information.append(get_FRA_Percent_Used(connection))
-
+    fra_information=get_FRA_configuration(connection)
     metrics_df=get_FRA_Percent_Used(connection)
 
     connection.close()
