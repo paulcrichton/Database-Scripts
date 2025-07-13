@@ -73,7 +73,7 @@ def main():
     port = 1521
     database_name = "ifslcdb"
 
-    fra_information=get_fra_information(user, pwd, host, port, database_name)
+    fra_information=create_FRA_report(user, pwd, host, port, database_name)
 
     print(fra_information)
 
