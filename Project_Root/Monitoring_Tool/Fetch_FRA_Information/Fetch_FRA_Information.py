@@ -21,36 +21,14 @@ def get_parameter(database_connection, parameter):
 def get_FRA_configuration(connection):
 
     configuration=[]
+    FRA_configuration_parameters=["db_recovery_file_dest", "db_recover_file_dest_size"]
 
-    configuration.append(get_parameter(connection, "db_recovery_file_dest"))
-    configuration.append(get_parameter(connection, "db_recovery_file_dest_size"))
+    for parameter in FRA_configuration_parameters:
+        configuration.append(get_parameter(connection, parameter))
+    
+    pd.DataFrame(data=configuration, columns=FRA_configuration_parameters)
 
     return configuration
-
-def get_FRA_location(database_connection):
-    
-    parameter="db_recovery_file_dest"
-    SQL = """select value from v$parameter where name=:parameter"""
-
-    fra_location=[]
-
-    cursor = database_connection.cursor()
-    for row in cursor.execute(SQL, [parameter]):            
-        fra_size = list(row)
-
-    return fra_size
-
-def get_FRA_Size(database_connection):
-    parameter="db_recovery_file_dest_size"
-    SQL = """select value from v$parameter where name=:parameter"""
-
-    fra_size=[]
-
-    cursor = database_connection.cursor()
-    for row in cursor.execute(SQL, [parameter]):            
-        fra_size = list(row)
-
-    return fra_size
 
 def get_FRA_Percent_Used(database_connection):
 
