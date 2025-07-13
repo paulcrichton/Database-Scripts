@@ -17,13 +17,13 @@ def get_parameter(database_connection, parameter):
 
 def get_FRA_configuration(connection):
 
-    configuration=[]
-    FRA_configuration_parameters=[["db_recovery_file_dest"], ["db_recover_file_dest_size"]]
+    configuration=[[]]
+    FRA_configuration_parameters=["db_recovery_file_dest", "db_recover_file_dest_size"]
 
     for parameter in FRA_configuration_parameters:
         configuration.append(get_parameter(connection, parameter))
     
-    pd.DataFrame(data=configuration, columns=FRA_configuration_parameters)
+    configuration=pd.DataFrame(data=configuration, columns=FRA_configuration_parameters)
 
     return configuration
 
