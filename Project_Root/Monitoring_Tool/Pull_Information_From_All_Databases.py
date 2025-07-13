@@ -41,17 +41,17 @@ def get_states(db_name):
 def get_FRA(db_name):
         user, pwd, host, port, database_name=create_login_details(db_name)
 
-        try: 
-            fra_information = GFI(user, pwd, host, port, database_name)
-            return fra_information
-        except:
-            print("-----------------------------------------\n")
-            print(f'Unable to query FRA information for {db_name}\n')
-            print("-----------------------------------------\n")
+        #try: 
+        fra_information = GFI(user, pwd, host, port, database_name)
+        return fra_information
+        #except:
+        #    print("-----------------------------------------\n")
+         #   print(f'Unable to query FRA information for {db_name}\n')
+          #  print("-----------------------------------------\n")
 
-            fra_information = [['UNKNOWN','UNKNOWN']]
+           # fra_information = [['UNKNOWN','UNKNOWN']]
 
-            return fra_information
+            #return fra_information
 
 def create_report_all():
     sysdate = datetime.today().isoformat()
