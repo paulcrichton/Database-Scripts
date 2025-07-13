@@ -2,6 +2,7 @@
 
 import oracledb
 import pyarrow
+import pandas as pd
 import numpy as np
 from Monitoring_Tool.Database_Connections import Create_Connection as DCCC
 
@@ -44,12 +45,11 @@ def get_fra_information(user, pwd, host, port, database_name):
 
     #Location, Size, Percent_Used_Space
     fra_information=[]
-
+    parameters_df=get_FRA_Size(connection)
     fra_information=get_FRA_location(connection)
-    fra_information.append(get_FRA_Size(connection))
     fra_information.append(get_FRA_Percent_Used(connection))
 
-    df=get_FRA_Percent_Used(connection)
+    metrics_df=get_FRA_Percent_Used(connection)
 
     connection.close()
 
