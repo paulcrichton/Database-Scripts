@@ -58,7 +58,7 @@ def create_report_all():
 
     db_arr, oh_arr = CDNHA()
 
-    for db_name, index in enumerate(db_arr):
+    for index, db_name in enumerate(db_arr):
 
         cdb_states, pdb_states = get_states(db_name)
 
