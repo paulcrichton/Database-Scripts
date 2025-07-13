@@ -26,7 +26,8 @@ def get_FRA_Size(database_connection):
     for row in cursor.execute(SQL):            
         fra_size = list(row)
 
-    print(cursor.description.col.name())
+    columns = [col.name.lower() for col in cursor.description]
+    print(columns)
 
     return fra_size
 
