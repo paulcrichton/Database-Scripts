@@ -31,8 +31,8 @@ def get_states(db_name):
             print(f'database {db_name} could not be queried\n')
             print("-----------------------------------------\n")
 
-            cdb_states = [['UNKNOWN','UNKNOWN']]
-            pdb_states = [['UNKNOWN','UNKNOWN']]
+            cdb_states = ['UNKNOWN']
+            pdb_states = ['UNKNOWN']
 
             return cdb_states, pdb_states
 
