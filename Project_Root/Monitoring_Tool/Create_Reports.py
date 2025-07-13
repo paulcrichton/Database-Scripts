@@ -42,38 +42,48 @@ def get_FRA(db_name):
         user, pwd, host, port, database_name=create_login_details(db_name)
 
         try: 
-            fra_information = CFR(user, pwd, host, port, database_name)
-            return fra_information
+            fra_configuration, fra_usage_breakdown, fra_percent_used= CFR(user, pwd, host, port, database_name)
+            return fra_configuration, fra_usage_breakdown, fra_percent_used
         except:
             print("-----------------------------------------\n")
             print(f'Unable to query FRA information for {db_name}\n')
             print("-----------------------------------------\n")
 
-            fra_information = [['UNKNOWN','UNKNOWN']]
+            fra_configuration, fra_usage_breakdown, fra_percent_used = [['UNKNOWN','UNKNOWN']]
 
-            return fra_information
+            return fra_configuration, fra_usage_breakdown, fra_percent_used
 
 def create_report_all():
     sysdate = datetime.today().isoformat()
 
     db_arr, oh_arr = CDNHA()
 
-    for db_name in db_arr:
+    for db_name, index in enumerate(db_arr):
 
         cdb_states, pdb_states = get_states(db_name)
 
-        print(f'Report for {db_name} started on {sysdate}')
+        print(f'Report for {db_name} started on {sysdate}\n\n')
+        print("-----------------------------------------\n")
+        print(f'Database Configuration Information')
+        print("-----------------------------------------\n")
+
+        print(f'Database Home: {oh_arr[index]}')
+
         print(f'Container database {db_name} is {cdb_states[0][1]}')
         
         for pdb, state in pdb_states:
             print(f'Pluggable Database {pdb} is {state}')
 
-        fra_information=get_FRA(db_name)
-
-        print(fra_information)
+        fra_configuration, fra_usage_breakdown, fra_percent_used=get_FRA(db_name)
+        print("\n\n\n")
+        print("-----------------------------------------\n")
+        print(f'Fast Recovery Configuration\n\n')
+        print("-----------------------------------------\n")
+        print(fra_configuration, "\n\n", fra_usage_breakdown, "\n\n", fra_percent_used)
 
         with open(f'{db_name}_{sysdate}.txt', "a") as f:
             f.write(f'Report for {db_name} started on {sysdate}')
+            f.write(fra_)
 
 
 

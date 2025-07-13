@@ -59,11 +59,9 @@ def create_FRA_report(user, pwd, host, port, database_name):
 
     fra_usage_breakdown, fra_percent_used=get_FRA_usage_metrics(connection)
 
-    print(fra_usage_breakdown, fra_percent_used)
-
     connection.close()
 
-    return fra_configuration
+    return fra_configuration, fra_usage_breakdown, fra_percent_used
 
 
 def main():
@@ -73,10 +71,9 @@ def main():
     port = 1521
     database_name = "ifslcdb"
 
-    fra_information=create_FRA_report(user, pwd, host, port, database_name)
+    fra_configuration, fra_usage_breakdown, fra_percent_used=create_FRA_report(user, pwd, host, port, database_name)
 
-    print(fra_information)
-
+    print(fra_configuration, fra_usage_breakdown, fra_percent_used)
 
 if __name__ == "__main__":
     main()
