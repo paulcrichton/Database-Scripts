@@ -60,6 +60,7 @@ def get_FRA(db_name):
 def create_report_all():
     sysdate = datetime.today().isoformat()
     o = sys.stdout
+    report_names=[]
 
     db_arr, oh_arr = CDNHA()
 
@@ -67,6 +68,8 @@ def create_report_all():
 
                
         with open(f'{db_name}_{sysdate}.txt', "a") as f:
+            report_names.append(f.name())
+
             f.write(f'Report for {db_name} started on {sysdate}')
             sys.stdout = f
 
@@ -100,6 +103,11 @@ def create_report_all():
             print(fra_configuration, "\n\n", fra_usage_breakdown, "\n\n", fra_percent_used)
 
     sys.stdout = o
+
+    print(report_names)
+    for file_name in report_names:
+        file = open("file_name")
+        print(file.read())
 
 
 
