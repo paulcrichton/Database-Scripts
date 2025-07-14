@@ -1,8 +1,27 @@
----Pull_Information_From_All_Databases.py
-    >Write CDB_PDB states to reports
-    >Add formatting for fra_information
-    >Write fra_information to reports
+---create_reports.py
+
 
 ---Fetch_FRA_Information
     >Process fra_size to GB
-    >Fetch FRA percentages used
+    
+
+---report metrics to add
+    >database configuration information
+    >tablespace capacity
+    >backup statusp
+
+--functionality to add
+    >run backup script?
+    >check standby status? 
+
+
+
+
+
+look into thresholds
+# For conditional coloring
+os.system("")
+class style():
+RED = '\033[31m'
+GREEN = '\033[32m'
+RESET = '\033[0m'
