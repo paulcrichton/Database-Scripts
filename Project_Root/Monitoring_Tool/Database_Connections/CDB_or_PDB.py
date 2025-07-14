@@ -7,7 +7,7 @@ from Monitoring_Tool.Database_Connections import Create_Connection as DCCC
 
 def check_pdb_or_cdb(database_connection):
     
-    container_database_states_SQL="select name, open_mode from v$PDBS"
+    container_database_states_SQL="select case sys_context('USERENV', 'CON_ID') when '1' then 'CDB' else 'PDB' end as cdb_or_pdb from dual"
     
     # Get an OracleDataFrame.
     # Adjust arraysize to tune the query fetch performance
