@@ -1,29 +1,32 @@
 #!/usr/bin/env python3.9
 
 import oracledb
+import pyarrow
+import pandas as pd
 import numpy as np
 from Monitoring_Tool.Database_Connections import Create_Connection as DCCC
 
 def fetch_pdb_states(database_connection):
-    pluggable_database_states=[]
 
-    cursor = database_connection.cursor()
-    for row in cursor.execute("select name, open_mode from v$PDBS"):
-        pluggable_database_states.append(row)
-
-    pluggable_database_states=np.asarray(pluggable_database_states)
+    pluggable_database_states_SQL="select name, open_mode from v$PDBS"
+    
+    # Get an OracleDataFrame.
+    # Adjust arraysize to tune the query fetch performance
+    odf = database_connection.fetch_df_all(statement=pluggable_database_states_SQL, arraysize=20)
+    pluggable_database_states= pyarrow.Table.from_arrays(odf.column_arrays(), names=odf.column_names()).to_pandas()
+    
     return pluggable_database_states
 
 def fetch_cdb_states(database_connection):
-    container_database_state=[]
-
-    cursor = database_connection.cursor()
-    for row in cursor.execute("select name, open_mode from v$database"):                
-        container_database_state.append(row)
-
-    container_database_state=np.asarray(container_database_state)
-
-    return container_database_state
+    
+    container_database_states_SQL="select name, open_mode from v$PDBS"
+    
+    # Get an OracleDataFrame.
+    # Adjust arraysize to tune the query fetch performance
+    odf = database_connection.fetch_df_all(statement=container_database_states_SQL, arraysize=20)
+    container_database_states= pyarrow.Table.from_arrays(odf.column_arrays(), names=odf.column_names()).to_pandas()
+    
+    return container_database_states
 
 def gather_information_from_database(user, pwd, host, port, database_name):
     

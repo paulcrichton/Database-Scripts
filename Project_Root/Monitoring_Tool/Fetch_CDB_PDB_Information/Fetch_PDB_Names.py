@@ -7,7 +7,7 @@ from Monitoring_Tool.Database_Connections import Create_Connection as DCCC
 
 def get_pluggable_names(database_connection):
 
-    pluggable_names_SQL="select name, open_mode from v$PDBS"
+    pluggable_names_SQL="select name from v$PDBS"
     
     # Get an OracleDataFrame.
     # Adjust arraysize to tune the query fetch performance
