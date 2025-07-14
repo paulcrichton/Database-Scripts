@@ -4,7 +4,6 @@ import oracledb
 import pyarrow
 import pandas as pd
 import numpy as np
-import logging 
 from Monitoring_Tool.Database_Connections import Create_Connection as DCCC
 
 def get_parameter(database_connection, parameter):
