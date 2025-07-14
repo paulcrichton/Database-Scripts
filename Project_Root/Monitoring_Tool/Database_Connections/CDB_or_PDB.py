@@ -1,0 +1,47 @@
+#!/usr/bin/env python3.9
+
+import oracledb
+import pyarrow
+import pandas as pd
+from Monitoring_Tool.Database_Connections import Create_Connection as DCCC
+
+def check_pdb_or_cdb(database_connection):
+    
+    container_database_states_SQL="select name, open_mode from v$PDBS"
+    
+    # Get an OracleDataFrame.
+    # Adjust arraysize to tune the query fetch performance
+    cursor = database_connection.cursor()
+    container_database_states= cursor.execute(container_database_states_SQL)
+    
+    return container_database_states
+
+def cdb_or_pdb(user, pwd, host, port, database_name):
+    
+    connection = DCCC.create_connection(user, pwd, host, port, database_name)
+
+    cdb_or_pdb_db_value = check_pdb_or_cdb(connection)
+
+    connection.close()
+
+    if cdb_or_pdb_db_value == "CDB":
+        return "CDB"
+    else:
+        return "PDB"
+
+
+###MAIN CODE FROM HERE
+def main():
+    user= "c##paul"
+    pwd = "paul"
+    host = "prodba-db"
+    port = 1521
+    database_name = "ifslcdb"
+
+    cbd_or_pdb_bool = cdb_or_pdb(user, pwd, host, port, database_name)
+
+    print(cbd_or_pdb_bool)
+
+if __name__ == "__main__":
+    main() 
+

@@ -27,16 +27,25 @@ def fetch_cdb_states(database_connection):
     
     return container_database_states
 
-def gather_information_from_database(user, pwd, host, port, database_name):
+def gather_information_from_container_database(user, pwd, host, port, database_name):
     
     connection = DCCC.create_connection(user, pwd, host, port, database_name)
 
-    cdb_states = fetch_cdb_states(connection)
+    cdb_state = fetch_cdb_states(connection)
+
+    connection.close()
+
+    return cdb_state
+
+def gather_information_from_pluggable_databases(user, pwd, host, port, database_name):
+    
+    connection = DCCC.create_connection(user, pwd, host, port, database_name)
+
     pdb_states = fetch_pdb_states(connection)
 
     connection.close()
 
-    return cdb_states, pdb_states
+    return pdb_states
 
 ###MAIN CODE FROM HERE
 def main():
@@ -48,7 +57,7 @@ def main():
 
     cdb_states, pdb_states = gather_information_from_database(user, pwd, host, port, database_name)
 
-    print(cdb_states, pdb_states)
+    print(cdb_states, "\n\n", pdb_states)
 
 if __name__ == "__main__":
     main() 
