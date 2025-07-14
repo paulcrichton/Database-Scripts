@@ -24,6 +24,8 @@ def cdb_or_pdb(user, pwd, host, port, database_name):
 
     connection.close()
 
+    print(cdb_or_pdb_db_value)
+
     if cdb_or_pdb_db_value == "CDB":
         return "CDB"
     else:
