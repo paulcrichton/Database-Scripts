@@ -3,7 +3,6 @@
 import oracledb
 import pyarrow
 import pandas as pd
-import numpy as np
 from Monitoring_Tool.Database_Connections import Create_Connection as DCCC
 
 def fetch_pdb_states(database_connection):
@@ -33,7 +32,7 @@ def gather_information_from_database(user, pwd, host, port, database_name):
     connection = DCCC.create_connection(user, pwd, host, port, database_name)
 
     cdb_states = fetch_cdb_states(connection)
-    pdb_states = np.asarray(fetch_pdb_states(connection))
+    pdb_states = fetch_pdb_states(connection)
 
     connection.close()
 
@@ -49,7 +48,7 @@ def main():
 
     cdb_states, pdb_states = gather_information_from_database(user, pwd, host, port, database_name)
 
-    print(cdb_states,pdb_states)
+    print(cdb_states, pdb_states)
 
 if __name__ == "__main__":
     main() 
