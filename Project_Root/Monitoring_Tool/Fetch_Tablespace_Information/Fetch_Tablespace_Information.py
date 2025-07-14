@@ -10,7 +10,7 @@ from Monitoring_Tool.Database_Connections import Create_Connection as DCCC
 
 def get_tablespace_usage_metrics(database_connection):
 
-    tablespace_useage_SQL="select * from dba_tablespace_usage_metrics order by 4;"
+    tablespace_useage_SQL="select * from dba_tablespace_usage_metrics order by 4"
 
     # Get an OracleDataFrame.
     # Adjust arraysize to tune the query fetch performance
