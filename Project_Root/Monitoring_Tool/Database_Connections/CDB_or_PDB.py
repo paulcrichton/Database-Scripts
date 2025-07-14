@@ -11,12 +11,10 @@ def check_pdb_or_cdb(database_connection):
     
     # Get an OracleDataFrame.
     # Adjust arraysize to tune the query fetch performance
-    cursor = database_connection.cursor(scrollable=True)
-    cursor.scroll(mode="first")
-    
+    cursor = database_connection.cursor()
     cursor.execute(container_database_states_SQL)
 
-    container_database_states= cursor.fetchone()
+    container_database_states = cursor.fetchone()
     
     
     return container_database_states
