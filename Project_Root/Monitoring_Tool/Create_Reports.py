@@ -125,7 +125,7 @@ def create_database_report(db_name):
 
         print(is_pdb)
 
-        if is_pdb == "CDB":
+        if "CDB" in is_pdb:
             cdb_state = get_database_state(db_name, is_pdb)
 
             if 'UNKNOWN' in cdb_state:
@@ -139,7 +139,7 @@ def create_database_report(db_name):
 
             print(f'Container database {db_name} is {cdb_state}')
 
-        elif is_pdb == "PDB":
+        elif "PDB" in is_pdb:
             pdb_state = get_database_state(db_name, is_pdb)
             print(f'pluggable database {db_name} is {pdb_state}')
 
