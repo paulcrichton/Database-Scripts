@@ -119,7 +119,7 @@ def create_database_report(db_name):
 
     with open(f'{db_name}_{sysdate}.txt', "a") as f:
         report_names=f.name
-        sys.stdout = f
+        #sys.stdout = f
 
         is_pdb=pluggable_check(db_name)
 
