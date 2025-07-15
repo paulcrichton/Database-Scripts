@@ -55,10 +55,6 @@ def main():
     port = 1521
     database_name = "ifslcdb"
 
-    cdb_states, pdb_states = gather_information_from_database(user, pwd, host, port, database_name)
-
-    print(cdb_states, "\n\n", pdb_states)
-
 if __name__ == "__main__":
     main() 
 

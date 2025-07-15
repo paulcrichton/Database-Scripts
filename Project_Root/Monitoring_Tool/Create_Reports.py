@@ -141,6 +141,7 @@ def create_database_report(db_name):
 
         elif "PDB" in is_pdb:
             pdb_state = get_database_state(db_name, is_pdb)
+            print(f'Report for {db_name} started at {sysdate}\n\n')
             print(f'pluggable database {db_name} is {pdb_state}')
 
         elif is_pdb == "UNKNOWN":
@@ -150,6 +151,13 @@ def create_database_report(db_name):
             print(f'End of report for {db_name} at {sysdate}')
             print("-----------------------------------------\n\n\n\n")
         
+        fra_configuration, fra_usage_breakdown, fra_percent_used=get_FRA(db_name)
+        print("\n\n\n")
+        print("-----------------------------------------\n")
+        print(f'Fast Recovery Configuration\n\n')
+        print("-----------------------------------------\n")
+        print(fra_configuration, "\n\n", fra_usage_breakdown, "\n\n", fra_percent_used)
+
     #sys.stdout = o
 
     # print(report_names)
