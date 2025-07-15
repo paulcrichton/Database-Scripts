@@ -1,8 +1,13 @@
 #!/usr/bin/env python3.9
 
-from Monitoring_Tool.Fetch_CDB_PDB_Information.Fetch_CDB_PDB_States import gather_information_from_database as GIFD
-from Monitoring_Tool.Fetch_CDB_PDB_Information.Fetch_Database_Home_And_SID import create_db_name_home_array as CDNHA
+from Monitoring_Tool.Fetch_Database_Status_Information.Fetch_Database_State import gather_cdb_state as GCS
+from Monitoring_Tool.Fetch_Database_Status_Information.Fetch_Database_State import gather_pdb_state as GPS
+from Monitoring_Tool.Fetch_Database_Status_Information.Fetch_CDB_PDB_States import gather_information_from_pluggable_databases as GIPD
+from Monitoring_Tool.Fetch_Database_Status_Information.Fetch_PDB_Names import create_pluggable_names_report as CPNR
+from Monitoring_Tool.Fetch_Database_Status_Information.Fetch_Database_Home_And_SID import create_db_name_home_array as CDNHA
 from Monitoring_Tool.Fetch_FRA_Information.Fetch_FRA_Information import create_FRA_report as CFR
+from Monitoring_Tool.Fetch_Tablespace_Information.Fetch_Tablespace_Information import create_tablespace_report as CTR
+from Monitoring_Tool.Database_Connections.CDB_or_PDB import cdb_or_pdb as COP
 import numpy as np
 import sys
 from datetime import datetime
@@ -20,24 +25,42 @@ def create_login_details(name):
 
     return user, pwd, host, port, database_name
 
-def get_states(db_name):
+def get_database_state(db_name, is_pdb):
     
-        user, pwd, host, port, database_name=create_login_details(db_name)
+    user, pwd, host, port, database_name=create_login_details(db_name)
 
-        try: 
-            cdb_states, pdb_states = GIFD(user, pwd, host, port, database_name)
-            return cdb_states, pdb_states
-        except:
-            print("-----------------------------------------\n")
-            print(f'database {db_name} could not be queried\n')
-            print("-----------------------------------------\n")
+    try: 
+        if is_pdb!='PDB':
+            cdb_state = GCS(user, pwd, host, port, database_name)
+            return cdb_state
+        else:
+            pdb_state = GPS(user, pwd, host, port, database_name)
+            return pdb_state
+            
+    except:
+        print("-----------------------------------------\n")
+        print(f'database {db_name} could not be queried\n')
+        print("-----------------------------------------\n")
 
-            cdb_states = ['UNKNOWN']
-            pdb_states = ['UNKNOWN']
+        cdb_state = "UNKNOWN"
 
-            return cdb_states, pdb_states
+        return cdb_state
+    
+def get_pluggable_names(container_name):
 
+    user, pwd, host, port, database_name=create_login_details(container_name)
 
+    try: 
+        pdb_states = CPNR(user, pwd, host, port, database_name)
+        return pdb_states
+    except:
+        print("-----------------------------------------\n")
+        print(f'database {container_name} could not be queried for pluggable names\n')
+        print("-----------------------------------------\n")
+
+        pdb_states = ['UNKNOWN']
+
+        return pdb_states
 
 def get_FRA(db_name):
         user, pwd, host, port, database_name=create_login_details(db_name)
@@ -56,58 +79,73 @@ def get_FRA(db_name):
         
 
             return fra_configuration, fra_usage_breakdown, fra_percent_used
+        
+def get_tablespace(db_name):
+        user, pwd, host, port, database_name=create_login_details(db_name)
 
-def create_report_all():
+        try: 
+            tablespace_metrics=CTR(user, pwd, host, port, database_name)
+            return tablespace_metrics
+        except:
+            print("-----------------------------------------\n")
+            print(f'Unable to query Tablespace information for {db_name}\n')
+            print("-----------------------------------------\n")
+
+            tablespace_metrics=[['UNKNOWN']]
+        
+
+            return tablespace_metrics
+        
+def create_database_report(db_name):
     sysdate = datetime.today().isoformat()
     o = sys.stdout
     report_names=[]
 
-    db_arr, oh_arr = CDNHA()
+    with open(f'{db_name}_{sysdate}.txt', "a") as f:
+        report_names=f.name
+        sys.stdout = f
 
-    for index, db_name in enumerate(db_arr):
+        is_pdb=COP(db_name)
 
-               
-        with open(f'{db_name}_{sysdate}.txt', "a") as f:
-            report_names.append(f.name)
+        if is_pdb!="PDB":
+            cdb_state = get_database_state(db_name, is_pdb)
 
-            f.write(f'Report for {db_name} started on {sysdate}')
-            sys.stdout = f
-
-            cdb_states, pdb_states = get_states(db_name)
-
-            if 'UNKNOWN' in cdb_states:
+            if 'UNKNOWN' in cdb_state:
+                print(f'Report for {db_name} started at {sysdate}\n\n')
                 print(f'Database {db_name} is unreachable\n')
                 print("-----------------------------------------\n")
                 print(f'End of report for {db_name} at {sysdate}')
                 print("-----------------------------------------\n\n\n\n")
-            
-                continue 
 
             print(f'Report for {db_name} started at {sysdate}\n\n')
-            print("-----------------------------------------\n")
-            print(f'Database Configuration Information')
-            print("-----------------------------------------\n")
 
-            print(f'Database Home: {oh_arr[index]}')
+            print(f'Container database {db_name} is {cdb_state}')
 
-            print(f'Container database {db_name} is {cdb_states[0][1]}')
-            
-            for pdb, state in pdb_states:
-                print(f'Pluggable Database {pdb} is {state}')
-
-            fra_configuration, fra_usage_breakdown, fra_percent_used=get_FRA(db_name)
-            print("\n\n\n")
-            print("-----------------------------------------\n")
-            print(f'Fast Recovery Configuration\n\n')
-            print("-----------------------------------------\n")
-            print(fra_configuration, "\n\n", fra_usage_breakdown, "\n\n", fra_percent_used)
-
+        else:
+            pdb_state = get_database_state(db_name, is_pdb)
+            print(f'pluggable database {db_name} is {pdb_state}')
+        
     sys.stdout = o
 
     print(report_names)
     for file_name in report_names:
         file = open(file_name)
         print(file.read())
+
+
+def create_report_all():
+
+    sysdate = datetime.today().isoformat()
+    oratab_sid_arr, oh_arr = CDNHA()
+
+    for index, container_name in enumerate(oratab_sid_arr):
+        create_database_report(container_name)
+
+        pdb_names=get_pluggable_names(container_name)
+        for pdb_name in pdb_names:
+            create_database_report(pdb_name)
+
+
 
 
 
