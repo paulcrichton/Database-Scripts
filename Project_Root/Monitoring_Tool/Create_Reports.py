@@ -114,7 +114,7 @@ def pluggable_check(db_name):
         
 def create_database_report(db_name):
     sysdate = datetime.today().isoformat()
-    o = sys.stdout
+    #o = sys.stdout
     report_names=[]
 
     with open(f'{db_name}_{sysdate}.txt', "a") as f:
@@ -148,12 +148,12 @@ def create_database_report(db_name):
             print(f'End of report for {db_name} at {sysdate}')
             print("-----------------------------------------\n\n\n\n")
         
-    sys.stdout = o
+    #sys.stdout = o
 
-    print(report_names)
-    for file_name in report_names:
-        file = open(file_name)
-        print(file.read())
+    # print(report_names)
+    # for file_name in report_names:
+    #     file = open(file_name)
+    #     print(file.read())
 
 
 def create_report_all():
