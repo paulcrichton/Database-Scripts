@@ -58,7 +58,7 @@ def get_pluggable_names(container_name):
         print(f'database {container_name} could not be queried for pluggable names\n')
         print("-----------------------------------------\n")
 
-        pdb_states = ['UNKNOWN']
+        pdb_states = "UNKNOWN"
 
         return pdb_states
 
@@ -167,8 +167,9 @@ def create_report_all():
         create_database_report(container_name)
 
         pdb_names=get_pluggable_names(container_name)
-        for pdb_name in pdb_names:
-            create_database_report(pdb_name)
+        if pdb_names != "UNKNOWN":
+            for pdb_name in pdb_names:
+                create_database_report(pdb_name)
 
 
 
