@@ -91,10 +91,26 @@ def get_tablespace(db_name):
             print(f'Unable to query Tablespace information for {db_name}\n')
             print("-----------------------------------------\n")
 
-            tablespace_metrics=[['UNKNOWN']]
+            tablespace_metrics="UNKNOWN"
         
 
             return tablespace_metrics
+        
+def pluggable_check(db_name):
+    user, pwd, host, port, database_name=create_login_details(db_name)
+
+    try: 
+        is_pdb=COP(user, pwd, host, port, database_name)
+        return is_pdb
+    except:
+        print("-----------------------------------------\n")
+        print(f'Unable to check if pluggable database for {db_name}\n')
+        print("-----------------------------------------\n")
+        
+        is_pdb="UNKNOWN"
+
+        return is_pdb
+
         
 def create_database_report(db_name):
     sysdate = datetime.today().isoformat()
@@ -105,9 +121,9 @@ def create_database_report(db_name):
         report_names=f.name
         sys.stdout = f
 
-        is_pdb=COP(db_name)
+        is_pdb=pluggable_check(db_name)
 
-        if is_pdb!="PDB":
+        if is_pdb == "CDB":
             cdb_state = get_database_state(db_name, is_pdb)
 
             if 'UNKNOWN' in cdb_state:
@@ -121,9 +137,16 @@ def create_database_report(db_name):
 
             print(f'Container database {db_name} is {cdb_state}')
 
-        else:
+        elif is_pdb == "PDB":
             pdb_state = get_database_state(db_name, is_pdb)
             print(f'pluggable database {db_name} is {pdb_state}')
+
+        elif is_pdb == "UNKNOWN":
+            print(f'Report for {db_name} started at {sysdate}\n\n')
+            print(f'Database {db_name} is unreachable\n')
+            print("-----------------------------------------\n")
+            print(f'End of report for {db_name} at {sysdate}')
+            print("-----------------------------------------\n\n\n\n")
         
     sys.stdout = o
 
