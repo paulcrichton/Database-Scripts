@@ -123,6 +123,8 @@ def create_database_report(db_name):
 
         is_pdb=pluggable_check(db_name)
 
+        print(is_pdb)
+
         if is_pdb == "CDB":
             cdb_state = get_database_state(db_name, is_pdb)
 
