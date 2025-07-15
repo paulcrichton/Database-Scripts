@@ -167,7 +167,7 @@ def create_report_all():
         create_database_report(container_name)
 
         pdb_names=get_pluggable_names(container_name)
-        if "UNKNOWN" in pdb_names:
+        if "UNKNOWN" not in pdb_names:
             for pdb_name in pdb_names:
                 create_database_report(pdb_name)
 
