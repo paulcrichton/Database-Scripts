@@ -8,7 +8,7 @@ from Monitoring_Tool.Fetch_Database_Status_Information.Fetch_Database_Home_And_S
 from Monitoring_Tool.Fetch_FRA_Information.Fetch_FRA_Information import create_FRA_report as CFR
 from Monitoring_Tool.Fetch_Tablespace_Information.Fetch_Tablespace_Information import create_tablespace_report as CTR
 from Monitoring_Tool.Database_Connections.CDB_or_PDB import cdb_or_pdb as COP
-import numpy as np
+import pandas as pd
 import sys
 from datetime import datetime
 
@@ -168,7 +168,7 @@ def create_report_all():
 
         pdb_names=get_pluggable_names(container_name)
         if "UNKNOWN" not in pdb_names:
-            for pdb_name in pdb_names:
+            for pdb_name in pdb_names.iterrows():
                 print(pdb_names, "testing this line here")
                 create_database_report(pdb_name)
 
