@@ -35,7 +35,7 @@ def create_alert_log_path(database_connection, db_name, trace_dir):
 
 def fetch_memory_configuration(database_connection):
 
-    home_base_directories_SQL="SELECT NAME, (VALUE/1024/1024) AS VALUE FROM V$PARAMETER WHERE NAME IN ('pga_aggregate_limit','pga_aggregate_target','sga_max_size','sga_min_size','sga_target','memory_max_target','memory_target')"
+    home_base_directories_SQL="SELECT NAME, (VALUE/1024/1024/1024 || 'G') AS VALUE FROM V$PARAMETER WHERE NAME IN ('pga_aggregate_limit','pga_aggregate_target','sga_max_size','sga_min_size','sga_target','memory_max_target','memory_target')"
 
     # Get an OracleDataFrame.
     # Adjust arraysize to tune the query fetch performance
