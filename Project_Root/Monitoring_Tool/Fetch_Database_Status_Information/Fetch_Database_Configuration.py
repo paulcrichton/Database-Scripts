@@ -36,7 +36,7 @@ def gather_configuration_information(user, pwd, host, port, database_name):
     connection = DCCC.create_connection(user, pwd, host, port, database_name)
 
     database_home_base = fetch_home_base(connection)
-    database_home_base = database_home_base.to_dict()
+    database_home_base = database_home_base.to_dict('records')
 
     trace_dir = fetch_trace_dir_location(connection)
 
