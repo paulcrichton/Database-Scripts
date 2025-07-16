@@ -36,13 +36,15 @@ def gather_configuration_information(user, pwd, host, port, database_name):
     connection = DCCC.create_connection(user, pwd, host, port, database_name)
 
     database_home_base = fetch_home_base(connection)
-    database_home_base = database_home_base.to_dict('records')
+    database_home_base.rename(columns={0: "PARAMETER", 1: "VALUE"})
 
     trace_dir = fetch_trace_dir_location(connection)
 
     alert_log = create_alert_log_path(connection, database_name, trace_dir)
 
-    database_configuration_information = pd.DataFrame(data=[database_home_base.values(),])
+    trace_dir = pd.DataFrame([{"PARAMETER" : "Trace_Directory", "VALUE": trace_dir}])
+
+    database_configuration_information = pd.concat([database_home_base, trace_dir], ignore_index=True)
 
     connection.close()
 
