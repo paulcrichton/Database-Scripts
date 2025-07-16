@@ -55,7 +55,10 @@ def main():
     port = 1521
     database_name = "ifslcdb"
 
-    configuration_information = gather_configuration_information
+    configuration_information = gather_configuration_information(user, pwd, host, port, database_name)
 
+    print(configuration_information)
+
+    
 if __name__ == "__main__":
     main() 
