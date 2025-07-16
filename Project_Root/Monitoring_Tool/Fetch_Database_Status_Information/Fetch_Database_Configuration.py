@@ -42,8 +42,6 @@ def fetch_memory_configuration(database_connection):
     odf = database_connection.fetch_df_all(statement=home_base_directories_SQL, arraysize=20)
     database_memory_parameters= pyarrow.Table.from_arrays(odf.column_arrays(), names=odf.column_names()).to_pandas()
 
-
-
     return database_memory_parameters
     
 
@@ -58,15 +56,14 @@ def gather_configuration_information(user, pwd, host, port, database_name):
 
     alert_log = create_alert_log_path(connection, database_name, trace_dir[2])
 
+    memory_parameters=fetch_memory_configuration(connection)
+    memory_parameters = memory_parameters.rename(columns={'NAME': "PARAMETER"})
+
     trace_dir = pd.DataFrame([{"PARAMETER" : trace_dir[1].upper(), "VALUE": trace_dir[2]}])
 
     alert_log = pd.DataFrame([{"PARAMETER" : "ALERT LOG", "VALUE": alert_log}])
 
-    memory_parameters=fetch_memory_configuration(connection)
-
-    print(memory_parameters)
-
-    database_configuration_information = pd.concat([database_home_base, trace_dir, alert_log], ignore_index=True)
+    database_configuration_information = pd.concat([database_home_base, trace_dir, alert_log, memory_parameters], ignore_index=True)
 
 
     connection.close()
