@@ -64,8 +64,8 @@ def main():
     database_name = "ifslcdb"
 
     ##Set Pandas Display Options
-    pd.options.display.expand_frame_repr(True)
-    pd.options.display.max_colwidth(None)
+    pd.set_option("expand_frame_repr", True)
+    pd.set_option("max_colwidth", None)
 
     configuration_information = gather_configuration_information(user, pwd, host, port, database_name)
 
