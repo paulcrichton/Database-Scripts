@@ -23,7 +23,7 @@ def fetch_trace_dir_location(database_connection):
     cursor = database_connection.cursor()
     cursor.execute(trace_dir_path_SQL)
 
-    trace_dir_path = str(cursor.fetchone())
+    trace_dir_path = cursor.fetchone()
     
     return trace_dir_path
 
@@ -40,9 +40,11 @@ def gather_configuration_information(user, pwd, host, port, database_name):
 
     trace_dir = fetch_trace_dir_location(connection)
 
-    alert_log = create_alert_log_path(connection, database_name, trace_dir)
+    #alert_log = create_alert_log_path(connection, database_name, trace_dir)
 
-    trace_dir = pd.DataFrame([{"PARAMETER" : trace_dir[1], "VALUE": trace_dir[2]}])
+    print(type(trace_dir))
+
+    trace_dir = pd.DataFrame([{"PARAMETER" : trace_dir, "VALUE": trace_dir}])
 
     database_configuration_information = pd.concat([database_home_base, trace_dir], ignore_index=True)
 
