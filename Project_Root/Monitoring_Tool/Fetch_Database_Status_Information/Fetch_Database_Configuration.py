@@ -62,7 +62,7 @@ def main():
     host = "prodba-db"
     port = 1521
     database_name = "ifslcdb"
-
+    pd.set_printoptions(max_colwidth=500)
     configuration_information = gather_configuration_information(user, pwd, host, port, database_name)
 
     print(configuration_information)
