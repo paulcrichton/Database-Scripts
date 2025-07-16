@@ -44,7 +44,7 @@ def gather_configuration_information(user, pwd, host, port, database_name):
 
     print(type(trace_dir))
 
-    trace_dir = pd.DataFrame([{"PARAMETER" : trace_dir, "VALUE": trace_dir}])
+    trace_dir = pd.DataFrame([{"PARAMETER" : trace_dir.index(1), "VALUE": trace_dir.index(2)}])
 
     database_configuration_information = pd.concat([database_home_base, trace_dir], ignore_index=True)
 
