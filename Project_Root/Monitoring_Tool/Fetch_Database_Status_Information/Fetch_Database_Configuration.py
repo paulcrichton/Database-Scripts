@@ -62,6 +62,10 @@ def gather_configuration_information(user, pwd, host, port, database_name):
 
     alert_log = pd.DataFrame([{"PARAMETER" : "ALERT LOG", "VALUE": alert_log}])
 
+    memory_parameters=fetch_memory_configuration(connection)
+
+    print(memory_parameters)
+
     database_configuration_information = pd.concat([database_home_base, trace_dir, alert_log], ignore_index=True)
 
 
