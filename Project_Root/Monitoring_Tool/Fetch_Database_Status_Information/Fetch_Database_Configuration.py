@@ -35,9 +35,11 @@ def gather_configuration_information(user, pwd, host, port, database_name):
     
     connection = DCCC.create_connection(user, pwd, host, port, database_name)
 
-    database_home_base = pd.DataFrame(fetch_home_base(connection)).to_dict()
+    database_home_base = fetch_home_base(connection)
+    database_home_base = database_home_base.to_dict()
 
-    trace_dir = pd.DataFrame(fetch_trace_dir_location(connection)).to_dict()
+    trace_dir = fetch_trace_dir_location(connection)
+    trace_dir = trace_dir.to_dict()
 
     alert_log = create_alert_log_path(connection, database_name, trace_dir)
 
@@ -59,6 +61,6 @@ def main():
 
     print(configuration_information)
 
-    
+
 if __name__ == "__main__":
     main() 
