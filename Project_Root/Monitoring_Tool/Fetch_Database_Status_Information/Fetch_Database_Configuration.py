@@ -29,7 +29,9 @@ def fetch_trace_dir_location(database_connection):
 
 def create_alert_log_path(database_connection, db_name, trace_dir):
 
-    database_connection
+    alert_log_path=trace_dir + f'alert_{db_name}.log'
+
+    return alert_log_path
 
 def gather_configuration_information(user, pwd, host, port, database_name):
     
@@ -40,11 +42,14 @@ def gather_configuration_information(user, pwd, host, port, database_name):
 
     trace_dir = fetch_trace_dir_location(connection)
 
-    #alert_log = create_alert_log_path(connection, database_name, trace_dir)
+    alert_log = create_alert_log_path(connection, database_name, trace_dir[2])
 
     trace_dir = pd.DataFrame([{"PARAMETER" : trace_dir[1].upper(), "VALUE": trace_dir[2]}])
 
-    database_configuration_information = pd.concat([database_home_base, trace_dir], ignore_index=True)
+    alert_log = pd.DataFrame([{"PARAMETER" : "ALERT LOG", "VALUE": alert_log}])
+
+    database_configuration_information = pd.concat([database_home_base, trace_dir, alert_log], ignore_index=True)
+
 
     connection.close()
 
