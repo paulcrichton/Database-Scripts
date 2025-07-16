@@ -1,5 +1,6 @@
 #!/usr/bin/env python3.9
 
+from Monitoring_Tool.Fetch_Database_Status_Information.Fetch_Database_Configuration import gather_configuration_information as GCI  
 from Monitoring_Tool.Fetch_Database_Status_Information.Fetch_Database_State import gather_cdb_state as GCS
 from Monitoring_Tool.Fetch_Database_Status_Information.Fetch_Database_State import gather_pdb_state as GPS
 from Monitoring_Tool.Fetch_Database_Status_Information.Fetch_CDB_PDB_States import gather_information_from_pluggable_databases as GIPD
@@ -158,6 +159,8 @@ def create_database_report(db_name):
         print("-----------------------------------------\n")
         print(fra_configuration, "\n\n", fra_usage_breakdown, "\n\n", fra_percent_used)
 
+
+
     #sys.stdout = o
 
     # print(report_names)
@@ -177,11 +180,7 @@ def create_report_all():
         pdb_names=get_pluggable_names(container_name)
         if "UNKNOWN" not in pdb_names:
             for pdb_name in pdb_names.NAME:
-                print(pdb_names, "testing this line here")
                 create_database_report(pdb_name)
-
-
-
 
 
 if __name__ == "__main__":
