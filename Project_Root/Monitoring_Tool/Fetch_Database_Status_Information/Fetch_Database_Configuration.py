@@ -85,6 +85,7 @@ def gather_configuration_information(user, pwd, host, port, database_name):
     database_file_parameters, actual_file_paths=fetch_file_locations(connection)
 
     print(database_file_parameters)
+    print(actual_file_paths)
 
     database_configuration_information = pd.concat([database_home_base, trace_dir, alert_log, memory_parameters], ignore_index=True)
 
