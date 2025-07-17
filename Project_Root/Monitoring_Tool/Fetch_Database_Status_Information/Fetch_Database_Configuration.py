@@ -53,14 +53,14 @@ def fetch_file_locations(database_connection):
     odf = database_connection.fetch_df_all(statement=database_file_parameters_SQL, arraysize=20)
     database_file_parameters= pyarrow.Table.from_arrays(odf.column_arrays(), names=odf.column_names()).to_pandas()
 
-    actual_database_file_paths_SQL="SELECT DISTINCT REGEXP_SUBSTR(NAME, '.*\/') AS VALUE from v$datafile"
+    actual_database_file_paths_SQL="SELECT DISTINCT \"DATAFILE PATH\" AS PARAMETER , REGEXP_SUBSTR(NAME, '.*\/') AS VALUE from v$datafile"
 
     # Get an OracleDataFrame.
     # Adjust arraysize to tune the query fetch performance
     odf = database_connection.fetch_df_all(statement=actual_database_file_paths_SQL, arraysize=20)
-    database_file_parameters= pyarrow.Table.from_arrays(odf.column_arrays(), names=odf.column_names()).to_pandas()
+    actual_file_paths= pyarrow.Table.from_arrays(odf.column_arrays(), names=odf.column_names()).to_pandas()
 
-    return database_file_parameters
+    return database_file_parameters, actual_file_paths
 
     
 
@@ -82,7 +82,7 @@ def gather_configuration_information(user, pwd, host, port, database_name):
 
     alert_log = pd.DataFrame([{"PARAMETER" : "ALERT LOG", "VALUE": alert_log}])
 
-    database_file_parameters=fetch_file_locations(connection)
+    database_file_parameters, actual_file_paths=fetch_file_locations(connection)
 
     print(database_file_parameters)
 
