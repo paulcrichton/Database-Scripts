@@ -53,7 +53,7 @@ def fetch_file_locations(database_connection):
     odf = database_connection.fetch_df_all(statement=database_file_parameters_SQL, arraysize=20)
     database_file_parameters= pyarrow.Table.from_arrays(odf.column_arrays(), names=odf.column_names()).to_pandas()
 
-    actual_database_file_paths_SQL="SELECT DISTINCT 'DATAFILE PATH' AS PARAMETER , REGEXP_SUBSTR(NAME, '.*\/') AS VALUE from v$datafile"
+    actual_database_file_paths_SQL="SELECT DISTINCT 'DATAFILE PATH' AS PARAMETER, REGEXP_SUBSTR(NAME, '.*\/') AS VALUE from v$datafile UNION SELECT DISTINCT 'TEMPFILE PATH' AS PARAMETER, REGEXP_SUBSTR(NAME, '.*\/') AS VALUE from v$tempfile UNION SELECT DISTINCT 'LOGFILE PATH' AS PARAMETER, REGEXP_SUBSTR(MEMBER, '.*\/') AS VALUE from v$logfile"
 
     # Get an OracleDataFrame.
     # Adjust arraysize to tune the query fetch performance
