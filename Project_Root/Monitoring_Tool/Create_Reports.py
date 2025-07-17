@@ -1,5 +1,6 @@
 #!/usr/bin/env python3.9
 
+from venv import create
 from Monitoring_Tool.Fetch_Database_Status_Information.Fetch_Database_Configuration import gather_configuration_information as GCI  
 from Monitoring_Tool.Fetch_Database_Status_Information.Fetch_Database_State import gather_cdb_state as GCS
 from Monitoring_Tool.Fetch_Database_Status_Information.Fetch_Database_State import gather_pdb_state as GPS
@@ -13,9 +14,10 @@ import pandas as pd
 import sys
 from datetime import datetime
 
+from Project_Root.Monitoring_Tool.Fetch_Database_Status_Information import Fetch_Database_Configuration
+
 def main():
     create_report_all()
-
 
 def create_login_details(name):
     user= "c##paul"
@@ -111,6 +113,21 @@ def pluggable_check(db_name):
         is_pdb="UNKNOWN"
 
         return is_pdb
+    
+def gather_database_configuration_information(db_name):
+    user, pwd, host, port, database_name=create_login_details(db_name)
+
+    try: 
+        configuration_information=GCI(user, pwd, host, port, database_name)
+        return configuration_information
+    except:
+        print("-----------------------------------------\n")
+        print(f'Unable to check database {db_name} for configuraiton information\n')
+        print("-----------------------------------------\n")
+        
+        configuarion_information="UNKNOWN"
+
+        return configuration_information
 
         
 def create_database_report(db_name):
@@ -151,6 +168,13 @@ def create_database_report(db_name):
             print("-----------------------------------------\n")
             print(f'End of report for {db_name} at {sysdate}')
             print("-----------------------------------------\n\n\n\n")
+
+
+        database_configuration_parameters=GCI(db_name)
+        print("-----------------------------------------\n")
+        print(f'Database Configuration\n\n')
+        print("-----------------------------------------\n")
+        print(database_configuration_parameters,"\n\n")
         
         fra_configuration, fra_usage_breakdown, fra_percent_used=get_FRA(db_name)
         print("\n\n\n")
@@ -158,6 +182,7 @@ def create_database_report(db_name):
         print(f'Fast Recovery Configuration\n\n')
         print("-----------------------------------------\n")
         print(fra_configuration, "\n\n", fra_usage_breakdown, "\n\n", fra_percent_used)
+
 
 
 

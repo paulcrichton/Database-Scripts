@@ -43,6 +43,18 @@ def fetch_memory_configuration(database_connection):
     database_memory_parameters= pyarrow.Table.from_arrays(odf.column_arrays(), names=odf.column_names()).to_pandas()
 
     return database_memory_parameters
+
+def fetch_file_locations(database_connection):
+
+    database_file_parameters_SQL="SELECT NAME, VALUE FROM V$PARAMETER WHERE NAME IN ('db_create_file_dest','control_files','db_recovery_file_dest')"
+
+    # Get an OracleDataFrame.
+    # Adjust arraysize to tune the query fetch performance
+    odf = database_connection.fetch_df_all(statement=database_file_parameters_SQL, arraysize=20)
+    database_file_parameters= pyarrow.Table.from_arrays(odf.column_arrays(), names=odf.column_names()).to_pandas()
+
+    return database_file_parameters
+
     
 
 def gather_configuration_information(user, pwd, host, port, database_name):
@@ -63,8 +75,9 @@ def gather_configuration_information(user, pwd, host, port, database_name):
 
     alert_log = pd.DataFrame([{"PARAMETER" : "ALERT LOG", "VALUE": alert_log}])
 
-    database_configuration_information = pd.concat([database_home_base, trace_dir, alert_log, memory_parameters], ignore_index=True)
+    database_file_parameters=fetch_file_locations(connection)
 
+    database_configuration_information = pd.concat([database_home_base, trace_dir, alert_log, memory_parameters], ignore_index=True)
 
     connection.close()
 
