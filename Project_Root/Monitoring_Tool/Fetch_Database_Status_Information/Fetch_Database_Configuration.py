@@ -60,6 +60,8 @@ def fetch_file_locations(database_connection):
     odf = database_connection.fetch_df_all(statement=actual_database_file_paths_SQL, arraysize=20)
     actual_file_paths= pyarrow.Table.from_arrays(odf.column_arrays(), names=odf.column_names()).to_pandas()
 
+    actual_file_paths['PARAMETER']=actual_file_paths['PARAMETER'].mask(actual_file_paths['PARAMETER'].duplicated(),"")
+
     return database_file_parameters, actual_file_paths
 
     
