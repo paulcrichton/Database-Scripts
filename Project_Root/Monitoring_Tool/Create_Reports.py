@@ -166,7 +166,7 @@ def gather_database_configuration_information(db_name):
         print(f'Unable to check database {db_name} for configuraiton information\n')
         print("-----------------------------------------\n")
         
-        configuarion_information="UNKNOWN"
+        configuration_information="UNKNOWN"
 
         return configuration_information
     
