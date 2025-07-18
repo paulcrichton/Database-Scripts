@@ -226,7 +226,7 @@ def create_database_report(db_name):
             print("-----------------------------------------\n\n\n\n")
 
 
-        database_configuration_parameters=GCI(db_name)
+        database_configuration_parameters=gather_database_configuration_information(db_name)
         print("-----------------------------------------\n")
         print(f'Database Configuration\n\n')
         print("-----------------------------------------\n")
