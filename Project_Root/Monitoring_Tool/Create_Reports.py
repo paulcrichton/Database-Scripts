@@ -1,20 +1,61 @@
 #!/usr/bin/env python3.9
 
-from venv import create
-from Monitoring_Tool.Fetch_Database_Status_Information.Fetch_Database_Configuration import gather_configuration_information as GCI  
-from Monitoring_Tool.Fetch_Database_Status_Information.Fetch_Database_State import gather_cdb_state as GCS
-from Monitoring_Tool.Fetch_Database_Status_Information.Fetch_Database_State import gather_pdb_state as GPS
-from Monitoring_Tool.Fetch_Database_Status_Information.Fetch_CDB_PDB_States import gather_information_from_pluggable_databases as GIPD
-from Monitoring_Tool.Fetch_Database_Status_Information.Fetch_PDB_Names import create_pluggable_names_report as CPNR
-from Monitoring_Tool.Fetch_Database_Status_Information.Fetch_Database_Home_And_SID import create_db_name_home_array as CDNHA
-from Monitoring_Tool.Fetch_FRA_Information.Fetch_FRA_Information import create_FRA_report as CFR
-from Monitoring_Tool.Fetch_Tablespace_Information.Fetch_Tablespace_Information import create_tablespace_report as CTR
-from Monitoring_Tool.Database_Connections.CDB_or_PDB import cdb_or_pdb as COP
-import pandas as pd
-import sys
-from datetime import datetime
+# ──────────────────────────────────────────────
+# Standard Library Imports
+# ──────────────────────────────────────────────
+import sys                                 # For system-specific parameters and functions
+from datetime import datetime              # For timestamping and logging
+import pandas as pd                        # For data manipulation and reporting
 
-from Project_Root.Monitoring_Tool.Fetch_Database_Status_Information import Fetch_Database_Configuration
+# ──────────────────────────────────────────────
+# Monitoring Tool - Database Configuration Information
+# ──────────────────────────────────────────────
+from Monitoring_Tool.Fetch_Database_Status_Information.Fetch_Database_Configuration import (
+    gather_configuration_information as GCI,                    # Logical configuration details
+    gather_physical_configuration_information as GPCI          # Physical setup details
+)
+
+# ──────────────────────────────────────────────
+# Monitoring Tool - Database State Information
+# ──────────────────────────────────────────────
+from Monitoring_Tool.Fetch_Database_Status_Information.Fetch_Database_State import (
+    gather_cdb_state as GCS,                                   # Container DB state
+    gather_pdb_state as GPS                                    # Pluggable DB state
+)
+
+# ──────────────────────────────────────────────
+# Monitoring Tool - Pluggable Databases (PDB) and Container Databases (CDB)
+# ──────────────────────────────────────────────
+from Monitoring_Tool.Fetch_Database_Status_Information.Fetch_CDB_PDB_States import (
+    gather_information_from_pluggable_databases as GIPD        # Gather info from all PDBs in a CDB
+)
+
+# ──────────────────────────────────────────────
+# Monitoring Tool - Database Names and Environment
+# ──────────────────────────────────────────────
+from Monitoring_Tool.Fetch_Database_Status_Information.Fetch_PDB_Names import (
+    create_pluggable_names_report as CPNR                      # Generate report of PDB names
+)
+from Monitoring_Tool.Fetch_Database_Status_Information.Fetch_Database_Home_And_SID import (
+    create_db_name_home_array as CDNHA                         # Get DB name, ORACLE_HOME, and SID
+)
+
+# ──────────────────────────────────────────────
+# Monitoring Tool - Storage & Space Usage
+# ──────────────────────────────────────────────
+from Monitoring_Tool.Fetch_FRA_Information.Fetch_FRA_Information import (
+    create_FRA_report as CFR                                   # Generate FRA usage report
+)
+from Monitoring_Tool.Fetch_Tablespace_Information.Fetch_Tablespace_Information import (
+    create_tablespace_report as CTR                            # Generate tablespace usage report
+)
+
+# ──────────────────────────────────────────────
+# Monitoring Tool - DB Type Detection
+# ──────────────────────────────────────────────
+from Monitoring_Tool.Database_Connections.CDB_or_PDB import (
+    cdb_or_pdb as COP                                          # Determine if database is CDB or PDB
+)
 
 def main():
     create_report_all()
@@ -128,6 +169,21 @@ def gather_database_configuration_information(db_name):
         configuarion_information="UNKNOWN"
 
         return configuration_information
+    
+def gather_physical_structure_information(db_name):
+    user, pwd, host, port, database_name=create_login_details(db_name)
+
+    try: 
+        physical_structure=GPCI(user, pwd, host, port, database_name)
+        return physical_structure
+    except:
+        print("-----------------------------------------\n")
+        print(f'Unable to check database {db_name} for physical structure information\n')
+        print("-----------------------------------------\n")
+        
+        physical_structure="UNKNOWN"
+
+        return physical_structure
 
         
 def create_database_report(db_name):
@@ -173,6 +229,12 @@ def create_database_report(db_name):
         database_configuration_parameters=GCI(db_name)
         print("-----------------------------------------\n")
         print(f'Database Configuration\n\n')
+        print("-----------------------------------------\n")
+        print(database_configuration_parameters,"\n\n")
+
+        database_file_parameters=gather_physical_structure_information(db_name)
+        print("-----------------------------------------\n")
+        print(f'Physical Configuration Configuration\n\n')
         print("-----------------------------------------\n")
         print(database_configuration_parameters,"\n\n")
         

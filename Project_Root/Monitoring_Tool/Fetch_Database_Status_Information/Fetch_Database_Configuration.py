@@ -44,6 +44,18 @@ def fetch_memory_configuration(database_connection):
 
     return database_memory_parameters
 
+def fetch_full_file_locations(database_connection):
+    full_file_paths_all_SQL="with rws as (SELECT 'CONTROL FILE' AS PARAMETER, VALUE AS PATH FROM V$PARAMETER WHERE NAME='control_files') SELECT 'CONTROL FILE' AS PARAMETER, regexp_substr (PATH, '[^,]+', 1, level) value from  rws connect by level <= length ( PATH	) - length ( replace ( PATH, ',' ) ) + 1 UNION SELECT 'DATAFILE PATH' AS PARAMETER, NAME AS PATH FROM V$DATAFILE UNION SELECT 'LOGFILE PATH' AS PARAMETER, MEMBER AS PATH FROM V$LOGFILE UNION SELECT 'TEMPFILE PATH' AS PARAMETER,NAME AS PATH FROM V$TEMPFILE;"
+
+    # Get an OracleDataFrame.
+    # Adjust arraysize to tune the query fetch performance
+    odf = database_connection.fetch_df_all(statement=full_file_paths_all_SQL, arraysize=20)
+    full_file_paths_all= pyarrow.Table.from_arrays(odf.column_arrays(), names=odf.column_names()).to_pandas()
+
+    full_file_paths_all['PARAMETER']=full_file_paths_all['PARAMETER'].mask(full_file_paths_all['PARAMETER'].duplicated(),"")
+
+    return full_file_paths_all
+
 def fetch_file_locations(database_connection):
 
     database_file_parameters_SQL="SELECT NAME, VALUE FROM V$PARAMETER WHERE NAME IN ('db_create_file_dest','control_files','db_recovery_file_dest')"
@@ -64,7 +76,15 @@ def fetch_file_locations(database_connection):
 
     return database_file_parameters, actual_file_paths
 
-    
+def gather_physical_configuration_information(user, pwd, host, port, database_name):
+
+    connection = DCCC.create_connection(user, pwd, host, port, database_name)
+
+    database_file_parameters, actual_file_paths=fetch_file_locations(connection)
+
+    connection.close()
+
+    return database_file_parameters
 
 def gather_configuration_information(user, pwd, host, port, database_name):
     
@@ -83,11 +103,6 @@ def gather_configuration_information(user, pwd, host, port, database_name):
     trace_dir = pd.DataFrame([{"PARAMETER" : trace_dir[1].upper(), "VALUE": trace_dir[2]}])
 
     alert_log = pd.DataFrame([{"PARAMETER" : "ALERT LOG", "VALUE": alert_log}])
-
-    database_file_parameters, actual_file_paths=fetch_file_locations(connection)
-
-    print(database_file_parameters)
-    print(actual_file_paths)
 
     database_configuration_information = pd.concat([database_home_base, trace_dir, alert_log, memory_parameters], ignore_index=True)
 
