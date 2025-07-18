@@ -236,7 +236,7 @@ def create_database_report(db_name):
         print("-----------------------------------------\n")
         print(f'Physical Configuration Configuration\n\n')
         print("-----------------------------------------\n")
-        print(database_configuration_parameters,"\n\n")
+        print(database_file_parameters,"\n\n")
         
         fra_configuration, fra_usage_breakdown, fra_percent_used=get_FRA(db_name)
         print("\n\n\n")
