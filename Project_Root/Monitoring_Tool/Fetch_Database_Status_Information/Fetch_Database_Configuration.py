@@ -84,7 +84,7 @@ def gather_physical_configuration_information(user, pwd, host, port, database_na
 
     connection.close()
 
-    return database_file_parameters
+    return database_file_parameters, actual_file_paths
 
 def gather_configuration_information(user, pwd, host, port, database_name):
     

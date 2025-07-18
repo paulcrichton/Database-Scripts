@@ -174,16 +174,17 @@ def gather_physical_structure_information(db_name):
     user, pwd, host, port, database_name=create_login_details(db_name)
 
     try: 
-        physical_structure=GPCI(user, pwd, host, port, database_name)
-        return physical_structure
+        physical_structure_parameters, actual_file_paths=GPCI(user, pwd, host, port, database_name)
+        return physical_structure_parameters, actual_file_paths
     except:
         print("-----------------------------------------\n")
         print(f'Unable to check database {db_name} for physical structure information\n')
         print("-----------------------------------------\n")
         
-        physical_structure="UNKNOWN"
+        physical_structure_parameters="UNKNOWN"
+        actual_file_paths="UNKNOWN"
 
-        return physical_structure
+        return physical_structure_parameters, actual_file_paths
 
         
 def create_database_report(db_name):
@@ -232,11 +233,16 @@ def create_database_report(db_name):
         print("-----------------------------------------\n")
         print(database_configuration_parameters,"\n\n")
 
-        database_file_parameters=gather_physical_structure_information(db_name)
+        database_file_parameters, actual_file_paths=gather_physical_structure_information(db_name)
         print("-----------------------------------------\n")
-        print(f'Physical Configuration Configuration\n\n')
+        print(f'Physical Database Configuration\n\n')
         print("-----------------------------------------\n")
+        print(f'Configuration Parameters\n\n')
         print(database_file_parameters,"\n\n")
+        print(f'Actual Database File Paths\n\n')
+        print(actual_file_paths,"\n\n")
+
+
         
         fra_configuration, fra_usage_breakdown, fra_percent_used=get_FRA(db_name)
         print("\n\n\n")
